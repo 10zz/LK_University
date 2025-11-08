@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">LK University</string>
+    <!-- Если успеем, то можем в будущем заменить на реальный домен -->
+    <string name="base_url">http://10.0.2.2</string>
 </resources>
