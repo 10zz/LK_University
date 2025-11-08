@@ -1,8 +1,5 @@
 <?php
 
-file_put_contents("post.log", print_r($_POST, true));
-file_put_contents("gpc.log", print_r($_REQUEST, true));
-
 $conn = mysqli_connect("localhost","root","","android_app");
 
 if($_SERVER['REQUEST_METHOD'] == 'POST')
