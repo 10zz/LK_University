@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LKUniversity">
         <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
             android:name=".LogInActivity"
             android:exported="false" />
         <activity

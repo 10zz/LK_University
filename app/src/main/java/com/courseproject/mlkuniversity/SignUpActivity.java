@@ -22,10 +22,10 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class LogInActivity extends AppCompatActivity
+public class SignUpActivity extends AppCompatActivity
 {
-    EditText emailEntry, passwordEntry;
-    Button logInButton, registerButton; // passwordRecoverButton - если будет время закодить
+    EditText emailEntry, SNILSEntry, IDNumber, passwordEntry, verifyPasswordEntry;
+    Button logInButton, registerButton;
     OkHttpClient httpClient;
 
     @Override
@@ -33,7 +33,7 @@ public class LogInActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_log_in);
+        setContentView(R.layout.activity_sign_up);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -52,17 +52,22 @@ public class LogInActivity extends AppCompatActivity
             //TODO: добавить ветвление для двух кнопок -
             // logInButton вызовет logInRequest
             // registerButton откроет registerActivity
+            // также добавить проверки правильности ввода пароля
         }
     };
 
-    // отправляет POST-запрос с паролем и почтой на сервер для проверки регистрации.
+    // отправляет POST-запрос с регистрационными данными на сервер для создания нового пользователя.
     private void logInRequest()
     {
         final String emailString = emailEntry.getText().toString();
+        final String SNILSString = SNILSEntry.getText().toString();
+        final String IDString = IDNumber.getText().toString();
         final String passwordString = passwordEntry.getText().toString();
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("email",emailString)
+                .add("SNILS",SNILSString)
+                .add("ID",IDString)
                 .add("password",passwordString)
                 .build();
         Request request = new Request.Builder().url(getString(R.string.base_url)).post(requestBody).build();
