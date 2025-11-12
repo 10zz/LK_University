@@ -1,9 +1,11 @@
 package com.courseproject.mlkuniversity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,9 +26,12 @@ import okhttp3.Response;
 
 public class SignUpActivity extends AppCompatActivity
 {
-    EditText emailEntry, SNILSEntry, IDNumber, passwordEntry, verifyPasswordEntry;
+    EditText emailEntry, SNILSEntry, IDEntry, passwordEntry, verifyPasswordEntry;
     Button logInButton, registerButton;
+    TextView errorTextView;
     OkHttpClient httpClient;
+    // Возвращаемое значение метода logInRequest.
+    String responseResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,28 +45,92 @@ public class SignUpActivity extends AppCompatActivity
             return insets;
         });
 
-        // TODO: Связать вышеописанные текстовые поля и кнопки
-        //  с View-элементами.
+        emailEntry = findViewById(R.id.emailEditText);
+        SNILSEntry = findViewById(R.id.SNILSEditText);
+        IDEntry = findViewById(R.id.IDEditText);
+        passwordEntry = findViewById(R.id.passwordEditText);
+        verifyPasswordEntry = findViewById(R.id.verifyPasswordEditText);
+        logInButton = findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
+        errorTextView = findViewById(R.id.errorTextView);
+
+        logInButton.setOnClickListener(buttonListener);
+        registerButton.setOnClickListener(buttonListener);
+
+        httpClient = new OkHttpClient();
+
+        // Передача значений из LogInActivity в текстовые поля.
+        Bundle arguments = getIntent().getExtras();
+        if (arguments != null)
+        {
+            emailEntry.setText(arguments.getString("email"));
+            passwordEntry.setText(arguments.getString("password"));
+        }
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener()
     {
         @Override
-        public void onClick(View v)
-        {
-            //TODO: добавить ветвление для двух кнопок -
-            // logInButton вызовет logInRequest
-            // registerButton откроет registerActivity
-            // также добавить проверки правильности ввода пароля
+        public void onClick(View v) {
+            // Если нажата кнопка входа.
+            if (v.getId() == R.id.loginButton) {
+                Intent LogInIntent = new Intent(SignUpActivity.this, LogInActivity.class)
+                        .putExtra("email", emailEntry.getText().toString())
+                        .putExtra("password", passwordEntry.getText().toString());
+                startActivity(LogInIntent);
+            }
+            // Если нажата кнопка регистрации.
+            else if (v.getId() == R.id.registerButton) {
+                // Выполняется POST-запрос входа на сервер, возвращается строка responseResult.
+                SignUpRequest();
+                // Проверка строки на наличие символов.
+                if (responseResult == null || responseResult.isEmpty()) {
+                    errorTextView.setText(R.string.login_empty_response_error_message);
+                    return;
+                }
+                // Разбиение ответа на подстроки.
+                String[] responseParts = responseResult.split("\n");
+
+                switch (responseParts[0]) {
+                    // Если вход успешен, управление передаётся в MainActivity, с параметрами
+                    // имени, почты, СНИЛСа и номера паспорта.
+                    case ("success"): {
+                        Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class)
+                                .putExtra("name", responseParts[1])
+                                .putExtra("email", responseParts[2])
+                                .putExtra("SNILS", responseParts[3])
+                                .putExtra("ID", responseParts[4]);
+                        startActivity(MainIntent);
+                        break;
+                    }
+                    // Если пользователя не найдено в БД, выводится соответствующее сообщение
+                    // об ошибке.
+                    case ("failure"): {
+                        errorTextView.setText(R.string.signup_server_error);
+                        break;
+                    }
+                    // Если отправленный запрос не является POST, выводится сообщение об ошибке
+                    // в API.
+                    case ("failed, an error occurred"): {
+                        errorTextView.setText(R.string.api_error_message);
+                        break;
+                    }
+                    default: {
+                        errorTextView.setText(R.string.login_unknown_error_message);
+                    }
+                }
+            }
+            else
+                System.out.println("Unknown button");
         }
     };
 
     // отправляет POST-запрос с регистрационными данными на сервер для создания нового пользователя.
-    private void logInRequest()
+    private void SignUpRequest()
     {
         final String emailString = emailEntry.getText().toString();
         final String SNILSString = SNILSEntry.getText().toString();
-        final String IDString = IDNumber.getText().toString();
+        final String IDString = IDEntry.getText().toString();
         final String passwordString = passwordEntry.getText().toString();
 
         RequestBody requestBody = new FormBody.Builder()
@@ -86,18 +155,7 @@ public class SignUpActivity extends AppCompatActivity
                     public void run()
                     {
                         try
-                        {
-                            // TODO: написать POST-скрипт,
-                            //  получающий на вход email и пароль,
-                            //  возвращающий (через echo) есть ли данный пользователь в базе данных.
-                            String responseResult = response.body().string();
-                            // TODO: написать ветвление - если пользователь есть в системе, перейти
-                            //  на activity с основным интерфейсом в соответствии с параметрами на
-                            //  этой странице (запомнить пользователя в системе или нет) и его ролью,
-                            //  указанной в базе данных;
-                            //  если пользователя в системе нет - вывести предупреждение об этом в
-                            //  textView над полями для ввода данных.
-                        }
+                        { responseResult = response.body().string(); }
                         catch (IOException e) { throw new RuntimeException(e); }
                     }
                 });

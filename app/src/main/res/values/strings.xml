@@ -3,7 +3,8 @@
     <!-- Если успеем, то можем в будущем заменить на реальный домен -->
     <string name="base_url">http://10.0.2.2</string>
     <string name="login_error_message">Данный пользователь не найден в системе</string>
-    <string name="login_server_error_message">Ошибка в API</string>
-    <string name="login_unknown_error_message">Неизвстная ошибка</string>
+    <string name="api_error_message">Ошибка в API</string>
+    <string name="login_unknown_error_message">Неизвeстная ошибка</string>
     <string name="login_empty_response_error_message">Сервер не вернул результат запроса</string>
+    <string name="signup_server_error">Сервер не смог внести пользователя в БД</string>
 </resources>
