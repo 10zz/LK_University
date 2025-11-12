@@ -39,10 +39,6 @@ public class MainActivity extends AppCompatActivity
             return insets;
         });
 
-        // Переход на activity входа в аккаунт.
-       /* Intent logInIntent = new Intent(MainActivity.this, LogInActivity.class);
-        startActivity(logInIntent);*/
-
         viewPager2 = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePageAdapter(this);
         viewPager2.setAdapter(pagerAdapter);
