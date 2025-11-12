@@ -55,6 +55,14 @@ public class LogInActivity extends AppCompatActivity
         registerButton.setOnClickListener(buttonListener);
 
         httpClient = new OkHttpClient();
+
+        // Передача значений из SignUpActivity в текстовые поля.
+        Bundle arguments = getIntent().getExtras();
+        if (arguments != null)
+        {
+            emailEntry.setText(arguments.getString("email"));
+            passwordEntry.setText(arguments.getString("password"));
+        }
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener()
@@ -68,7 +76,7 @@ public class LogInActivity extends AppCompatActivity
                 // Выполняется POST-запрос входа на сервер, возвращается строка responseResult.
                 logInRequest();
                 // Проверка строки на наличие символов.
-                if (responseResult.isEmpty())
+                if (responseResult == null || responseResult.isEmpty())
                 {
                     errorTextView.setText(R.string.login_empty_response_error_message);
                     return;
@@ -101,7 +109,7 @@ public class LogInActivity extends AppCompatActivity
                     // в API.
                     case("failed, an error occurred"):
                     {
-                        errorTextView.setText(R.string.login_server_error_message);
+                        errorTextView.setText(R.string.api_error_message);
                         break;
                     }
                     default:
@@ -115,8 +123,8 @@ public class LogInActivity extends AppCompatActivity
             {
                 // Осуществляется переход в SignUpActivity с передачей введённого email и пароля.
                 Intent SignUpIntent = new Intent(LogInActivity.this, SignUpActivity.class)
-                        .putExtra("email", emailEntry.getText())
-                        .putExtra("password", passwordEntry.getText());
+                        .putExtra("email", emailEntry.getText().toString())
+                        .putExtra("password", passwordEntry.getText().toString());
                 startActivity(SignUpIntent);
             }
             else
