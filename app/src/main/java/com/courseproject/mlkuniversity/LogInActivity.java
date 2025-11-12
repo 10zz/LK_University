@@ -1,9 +1,11 @@
 package com.courseproject.mlkuniversity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,9 +26,12 @@ import okhttp3.Response;
 
 public class LogInActivity extends AppCompatActivity
 {
-    EditText emailEntry, passwordEntry;
+     EditText emailEntry, passwordEntry;
     Button logInButton, registerButton; // passwordRecoverButton - если будет время закодить
+    TextView errorTextView;
     OkHttpClient httpClient;
+    // Возвращаемое значение метода logInRequest.
+    String responseResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,8 +45,16 @@ public class LogInActivity extends AppCompatActivity
             return insets;
         });
 
-        // TODO: Связать вышеописанные текстовые поля и кнопки
-        //  с View-элементами.
+        emailEntry = findViewById(R.id.emailEditText);
+        passwordEntry = findViewById(R.id.passwordEditText);
+        logInButton = findViewById(R.id.loginButton);
+        registerButton = findViewById(R.id.registerButton);
+        errorTextView = findViewById(R.id.errorTextView);
+
+        logInButton.setOnClickListener(buttonListener);
+        registerButton.setOnClickListener(buttonListener);
+
+        httpClient = new OkHttpClient();
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener()
@@ -49,15 +62,72 @@ public class LogInActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            //TODO: добавить ветвление для двух кнопок -
-            // logInButton вызовет logInRequest
-            // registerButton откроет registerActivity
+            // Если нажата кнопка входа.
+            if (v.getId() == R.id.loginButton)
+            {
+                // Выполняется POST-запрос входа на сервер, возвращается строка responseResult.
+                logInRequest();
+                // Проверка строки на наличие символов.
+                if (responseResult.isEmpty())
+                {
+                    errorTextView.setText(R.string.login_empty_response_error_message);
+                    return;
+                }
+                // Разбиение ответа на подстроки.
+                String[] responseParts = responseResult.split("\n");
+
+                switch (responseParts[0])
+                {
+                    // Если вход успешен, управление передаётся в MainActivity, с параметрами
+                    // имени, почты, СНИЛСа и номера паспорта.
+                    case("success"):
+                    {
+                        Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class)
+                                .putExtra("name", responseParts[1])
+                                .putExtra("email",responseParts[2])
+                                .putExtra("SNILS",responseParts[3])
+                                .putExtra("ID",responseParts[4]);
+                        startActivity(MainIntent);
+                        break;
+                    }
+                    // Если пользователя не найдено в БД, выводится соответствующее сообщение
+                    // об ошибке.
+                    case("failure"):
+                    {
+                        errorTextView.setText(R.string.login_error_message);
+                        break;
+                    }
+                    // Если отправленный запрос не является POST, выводится сообщение об ошибке
+                    // в API.
+                    case("failed, an error occurred"):
+                    {
+                        errorTextView.setText(R.string.login_server_error_message);
+                        break;
+                    }
+                    default:
+                    {
+                        errorTextView.setText(R.string.login_unknown_error_message);
+                    }
+                }
+            }
+            // Если нажата кнопка регистрации.
+            else if (v.getId() == R.id.registerButton)
+            {
+                // Осуществляется переход в SignUpActivity с передачей введённого email и пароля.
+                Intent SignUpIntent = new Intent(LogInActivity.this, SignUpActivity.class)
+                        .putExtra("email", emailEntry.getText())
+                        .putExtra("password", passwordEntry.getText());
+                startActivity(SignUpIntent);
+            }
+            else
+                System.out.println("Unknown button");
         }
     };
 
     // отправляет POST-запрос с паролем и почтой на сервер для проверки регистрации.
     private void logInRequest()
     {
+
         final String emailString = emailEntry.getText().toString();
         final String passwordString = passwordEntry.getText().toString();
 
@@ -81,18 +151,7 @@ public class LogInActivity extends AppCompatActivity
                     public void run()
                     {
                         try
-                        {
-                            // TODO: написать POST-скрипт,
-                            //  получающий на вход email и пароль,
-                            //  возвращающий (через echo) есть ли данный пользователь в базе данных.
-                            String responseResult = response.body().string();
-                            // TODO: написать ветвление - если пользователь есть в системе, перейти
-                            //  на activity с основным интерфейсом в соответствии с параметрами на
-                            //  этой странице (запомнить пользователя в системе или нет) и его ролью,
-                            //  указанной в базе данных;
-                            //  если пользователя в системе нет - вывести предупреждение об этом в
-                            //  textView над полями для ввода данных.
-                        }
+                        { responseResult = response.body().string(); }
                         catch (IOException e) { throw new RuntimeException(e); }
                     }
                 });
