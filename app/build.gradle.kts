@@ -32,6 +32,10 @@ android {
 }
 
 dependencies {
+    implementation("androidx.fragment:fragment:1.8.9")
+    implementation("com.google.android.material:material:1.13.0")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -40,5 +44,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
