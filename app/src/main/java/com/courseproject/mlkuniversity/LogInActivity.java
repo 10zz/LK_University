@@ -27,7 +27,7 @@ import okhttp3.Response;
 public class LogInActivity extends AppCompatActivity
 {
      EditText emailEntry, passwordEntry;
-    Button logInButton, registerButton; // passwordRecoverButton - если будет время закодить
+    Button logInButton, registerButton, passwordRecoveryButton;
     TextView errorTextView;
     OkHttpClient httpClient;
     // Возвращаемое значение метода logInRequest.
@@ -49,10 +49,12 @@ public class LogInActivity extends AppCompatActivity
         passwordEntry = findViewById(R.id.passwordEditText);
         logInButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
+        passwordRecoveryButton = findViewById(R.id.passwordRecoveryButton);
         errorTextView = findViewById(R.id.errorTextView);
 
         logInButton.setOnClickListener(buttonListener);
         registerButton.setOnClickListener(buttonListener);
+        passwordRecoveryButton.setOnClickListener(buttonListener);
 
         httpClient = new OkHttpClient();
 
@@ -125,6 +127,13 @@ public class LogInActivity extends AppCompatActivity
                 Intent SignUpIntent = new Intent(LogInActivity.this, SignUpActivity.class)
                         .putExtra("email", emailEntry.getText().toString())
                         .putExtra("password", passwordEntry.getText().toString());
+                startActivity(SignUpIntent);
+            }
+            else if (v.getId() == R.id.passwordRecoveryButton)
+            {
+                // Осуществляется переход в PasswordRecoveryActivity с передачей введённого email.
+                Intent SignUpIntent = new Intent(LogInActivity.this, PasswordRecoveryActivity.class)
+                        .putExtra("email", emailEntry.getText().toString());
                 startActivity(SignUpIntent);
             }
             else
