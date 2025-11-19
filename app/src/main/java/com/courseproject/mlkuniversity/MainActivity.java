@@ -17,13 +17,15 @@ import com.courseproject.mlkuniversity.main_ui_fragments.FinanceFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.HomeFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.ScheduleFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.StudyFragment;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity
 {
 
-    private static final int NAM_PAGES = 5;
+    private static final int NAM_PAGES = 4;
     private ViewPager2 viewPager2;
     private FragmentStateAdapter pagerAdapter;
 
@@ -42,9 +44,24 @@ public class MainActivity extends AppCompatActivity
         viewPager2 = findViewById(R.id.pager);
         pagerAdapter = new ScreenSlidePageAdapter(this);
         viewPager2.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2,
+                new TabLayoutMediator.TabConfigurationStrategy()
+                {
+                    String[] tabText = getResources().getStringArray(R.array.main_tab_ui);
+                    @Override
+                    public void onConfigureTab(TabLayout.Tab tab, int position)
+                    {
+                        tab.setText(tabText[position])
+                                .setIcon(R.drawable.ic_launcher_foreground);
+                    }
+        });
+        tabLayoutMediator.attach();
     }
 
-    private class ScreenSlidePageAdapter extends FragmentStateAdapter {
+    private class ScreenSlidePageAdapter extends FragmentStateAdapter
+    {
         public ScreenSlidePageAdapter(MainActivity mainActivity) {
             super(mainActivity);
         }

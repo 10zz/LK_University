@@ -7,4 +7,10 @@
     <string name="login_unknown_error_message">Неизвeстная ошибка</string>
     <string name="login_empty_response_error_message">Сервер не вернул результат запроса</string>
     <string name="signup_server_error">Сервер не смог внести пользователя в БД</string>
+    <string-array name="main_tab_ui">
+        <item>Уведомления</item>
+        <item>Учёба</item>
+        <item>Расписание</item>
+        <item>Финансы</item>
+    </string-array>
 </resources>
