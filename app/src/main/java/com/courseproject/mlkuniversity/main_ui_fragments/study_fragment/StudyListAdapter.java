@@ -32,7 +32,6 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-
         View view = inflater.inflate(R.layout.list_item_study, parent, false);
         return new ViewHolder(view);
     }
