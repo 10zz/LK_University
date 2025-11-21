@@ -55,10 +55,12 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     }
 
 
-    // Использует определенные в list_item_home.xml элементы управления.
+    // Использует определенные в list_item_home.xml элементы View.
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         final TextView titleView, descriptionView;
+
+
         ViewHolder(View view)
         {
             super(view);
