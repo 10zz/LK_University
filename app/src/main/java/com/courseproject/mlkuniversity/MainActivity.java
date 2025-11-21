@@ -1,6 +1,5 @@
 package com.courseproject.mlkuniversity;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -14,7 +13,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.courseproject.mlkuniversity.main_ui_fragments.FinanceFragment;
-import com.courseproject.mlkuniversity.main_ui_fragments.HomeFragment;
+import com.courseproject.mlkuniversity.main_ui_fragments.home_fragment.HomeFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.ScheduleFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.StudyFragment;
 import com.google.android.material.tabs.TabLayout;
