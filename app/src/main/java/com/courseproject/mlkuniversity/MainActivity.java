@@ -14,7 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.courseproject.mlkuniversity.main_ui_fragments.FinanceFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.home_fragment.HomeFragment;
-import com.courseproject.mlkuniversity.main_ui_fragments.ScheduleFragment;
+import com.courseproject.mlkuniversity.main_ui_fragments.schedule_fragment.ScheduleFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
