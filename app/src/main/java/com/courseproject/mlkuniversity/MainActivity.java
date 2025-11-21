@@ -15,7 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.courseproject.mlkuniversity.main_ui_fragments.FinanceFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.home_fragment.HomeFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.ScheduleFragment;
-import com.courseproject.mlkuniversity.main_ui_fragments.StudyFragment;
+import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyFragment;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -73,9 +73,9 @@ public class MainActivity extends AppCompatActivity
                 case 0:
                     return new HomeFragment();
                 case 1:
-                    return new ScheduleFragment();
-                case 2:
                     return new StudyFragment();
+                case 2:
+                    return new ScheduleFragment();
                 case 3:
                     return new FinanceFragment();
                 default:
