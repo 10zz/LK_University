@@ -38,15 +38,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/groupEditText" />-->
 
+            <!--app:layout_constraintTop_toBottomOf="@+id/teacherEditText"-->
+
             <TextView
                 android:id="@+id/dateIntervalText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="212dp"
                 android:text="date"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-                <!--app:layout_constraintTop_toBottomOf="@+id/teacherEditText"-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
@@ -59,6 +62,51 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateIntervalText" />
+
+            <AutoCompleteTextView
+                android:id="@+id/teacherEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="teacher"
+                app:layout_constraintBottom_toTopOf="@+id/dateIntervalText"
+                app:layout_constraintEnd_toEndOf="@+id/groupEditText"
+                app:layout_constraintStart_toStartOf="@+id/groupEditText" />
+
+            <AutoCompleteTextView
+                android:id="@+id/groupEditText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                android:text="group"
+                app:layout_constraintBottom_toTopOf="@+id/teacherEditText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.502"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/pageTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="РАСПИСАНИЕ"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.501"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/pageDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:text="еще текст"
+                app:layout_constraintBottom_toTopOf="@+id/groupEditText"
+                app:layout_constraintEnd_toEndOf="@+id/pageTitle"
+                app:layout_constraintHorizontal_bias="0.558"
+                app:layout_constraintStart_toStartOf="@+id/pageTitle"
+                app:layout_constraintTop_toBottomOf="@+id/pageTitle"
+                app:layout_constraintVertical_bias="1.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -66,6 +66,7 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
         ViewHolder(View view)
         {
             super(view);
+            // TODO: присваивание иконки из переменной с иконкой.
             headerView = view.findViewById(R.id.headerText);
             descriptionView = view.findViewById(R.id.descriptionText);
             iconView = view.findViewById(R.id.icon);
