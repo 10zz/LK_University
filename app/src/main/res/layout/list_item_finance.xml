@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/operationIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_star" />
+
+    <TextView
+        android:id="@+id/operationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="операция"
+        app:layout_constraintStart_toEndOf="@+id/operationIcon"
+        app:layout_constraintTop_toTopOf="@+id/operationIcon" />
+
+    <TextView
+        android:id="@+id/operationTypeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:text="тип операции"
+        app:layout_constraintStart_toEndOf="@+id/operationIcon"
+        app:layout_constraintTop_toBottomOf="@+id/operationText" />
+
+    <TextView
+        android:id="@+id/sumText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:text="сумма"
+        app:layout_constraintStart_toEndOf="@+id/operationText"
+        app:layout_constraintTop_toTopOf="@+id/operationText" />
+
+    <TextView
+        android:id="@+id/paymentDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:text="дата"
+        app:layout_constraintStart_toEndOf="@+id/operationTypeText"
+        app:layout_constraintTop_toTopOf="@+id/operationTypeText" />
+</androidx.constraintlayout.widget.ConstraintLayout>

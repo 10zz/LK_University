@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.courseproject.mlkuniversity.main_ui_fragments.FinanceFragment;
+import com.courseproject.mlkuniversity.main_ui_fragments.finance_fragment.FinanceFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.home_fragment.HomeFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.schedule_fragment.ScheduleFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyFragment;
