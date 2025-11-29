@@ -49,7 +49,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity
             // Если нажата кнопка входа.
             if (v.getId() == R.id.sendButton)
             {
-                // Я хз как это делать.
+                // TODO: Я хз как это делать.
             }
             // Если нажата кнопка регистрации.
             else if (v.getId() == R.id.returnButton)

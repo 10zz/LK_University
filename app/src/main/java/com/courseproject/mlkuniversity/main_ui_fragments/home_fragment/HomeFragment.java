@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment {
     // Тестовые значения.
     private void setInitialData()
     {
+        // TODO: PHP скрипт с запросом данных уведомлений.
         homeListItems.add(new HomeListItem("Бразилия", "Бразилиа"));
         homeListItems.add(new HomeListItem("Аргентина", "Буэнос-Айрес"));
         homeListItems.add(new HomeListItem("Колумбия", "Богота"));

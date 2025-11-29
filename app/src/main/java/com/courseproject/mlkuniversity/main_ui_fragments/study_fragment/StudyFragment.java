@@ -45,6 +45,7 @@ public class StudyFragment extends Fragment {
     // Тестовые значения.
     private void setInitialData()
     {
+        // TODO: PHP скрипт с запросом данных.
         studyListItems.add(new StudyListItem("Великобритания", "Лондон"));
         studyListItems.add(new StudyListItem("Мексика", "Мехико"));
         studyListItems.add(new StudyListItem("Норвегия", "Осло"));

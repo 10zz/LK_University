@@ -45,6 +45,7 @@ public class ScheduleFragment extends Fragment
     // Тестовые значения.
     private void setInitialData()
     {
+        // TODO: PHP скрипт с запросом данных согласно настройкам.
         scheduleListItems.add(new ScheduleListItem("Понедельник", "11.12.2022", "ЛПП", "Иванов ИИ", "ПИЭ11", "12:00 - 23:23", "2-333"));
         scheduleListItems.add(new ScheduleListItem("Вторник", "12.12.2022", "РМП", "Васин ИИ", "ПИЭ12", "13:00 - 13:23", "3-553"));
         scheduleListItems.add(new ScheduleListItem("Среда", "13.12.2022", "Вареники", "Петров ИИ", "ПИ21", "15:00 - 23:23", "6-233"));

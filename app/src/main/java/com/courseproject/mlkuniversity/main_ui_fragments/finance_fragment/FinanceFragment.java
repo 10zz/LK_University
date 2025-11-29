@@ -45,6 +45,8 @@ public class FinanceFragment extends Fragment {
     // Тестовые значения.
     private void setInitialData()
     {
+        // TODO: PHP скрипт с запросом данных для конкретного пользователя.
+
         financeListItems.add(new FinanceListItem("Бразилия", "Бразилиа", "23", "23.12.2333"));
         financeListItems.add(new FinanceListItem("Аргентина", "Буэнос-Айрес", "23", "23.12.2333"));
         financeListItems.add(new FinanceListItem("Колумбия", "Богота", "23", "23.12.2333"));

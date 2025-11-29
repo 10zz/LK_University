@@ -55,7 +55,7 @@
                 android:id="@+id/list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="92dp"
                 android:background="@color/black"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -67,10 +67,11 @@
                 android:id="@+id/teacherEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="20dp"
                 android:text="teacher"
                 app:layout_constraintBottom_toTopOf="@+id/dateIntervalText"
                 app:layout_constraintEnd_toEndOf="@+id/groupEditText"
+                app:layout_constraintHorizontal_bias="0.357"
                 app:layout_constraintStart_toStartOf="@+id/groupEditText" />
 
             <AutoCompleteTextView
@@ -107,6 +108,7 @@
                 app:layout_constraintStart_toStartOf="@+id/pageTitle"
                 app:layout_constraintTop_toBottomOf="@+id/pageTitle"
                 app:layout_constraintVertical_bias="1.0" />
+            
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
