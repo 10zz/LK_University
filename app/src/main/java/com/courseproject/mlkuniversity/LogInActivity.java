@@ -89,14 +89,12 @@ public class LogInActivity extends AppCompatActivity
                 switch (responseParts[0])
                 {
                     // Если вход успешен, управление передаётся в MainActivity, с параметрами
-                    // имени, почты, СНИЛСа и номера паспорта.
+                    // имени и почты.
                     case("success"):
                     {
                         Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class)
                                 .putExtra("name", responseParts[1])
-                                .putExtra("email",responseParts[2])
-                                .putExtra("SNILS",responseParts[3])
-                                .putExtra("ID",responseParts[4]);
+                                .putExtra("email",responseParts[2]);
                         startActivity(MainIntent);
                         break;
                     }

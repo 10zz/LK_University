@@ -1,6 +1,9 @@
 package com.courseproject.mlkuniversity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity
     private static final int NAM_PAGES = 4;
     private ViewPager2 viewPager2;
     private FragmentStateAdapter pagerAdapter;
+    private ImageButton profileButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,6 +42,26 @@ public class MainActivity extends AppCompatActivity
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        profileButton = findViewById(R.id.returnButton);
+        profileButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Bundle arguments = getIntent().getExtras();
+
+                Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class)
+                    .putExtra("name", "тфьу")
+                    .putExtra("email", "уьфшд");
+                // TODO: .putExtra("role", "тфьу")
+
+                /* TODO: Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class)
+                        .putExtra("name", arguments.getString("name"))
+                        .putExtra("email", arguments.getString("email"));*/
+                startActivity(ProfileIntent);
+            }
         });
 
         viewPager2 = findViewById(R.id.pager);
