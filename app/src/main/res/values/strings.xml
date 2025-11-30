@@ -7,10 +7,16 @@
     <string name="login_unknown_error_message">Неизвeстная ошибка</string>
     <string name="login_empty_response_error_message">Сервер не вернул результат запроса</string>
     <string name="signup_server_error">Сервер не смог внести пользователя в БД</string>
-    <string-array name="main_tab_ui">
+    <string-array name="student_main_tab_ui">
         <item>Уведомления</item>
         <item>Учёба</item>
         <item>Расписание</item>
         <item>Финансы</item>
     </string-array>
+    <string-array name="teacher_main_tab_ui">
+        <item>Руководителю ВКР</item>
+        <item>Расписание</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
