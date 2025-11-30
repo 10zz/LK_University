@@ -10,7 +10,6 @@
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_dynamic_primary40"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </ScrollView>
