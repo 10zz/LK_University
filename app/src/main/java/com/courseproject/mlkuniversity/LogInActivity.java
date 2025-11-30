@@ -1,6 +1,7 @@
 package com.courseproject.mlkuniversity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,14 @@ public class LogInActivity extends AppCompatActivity
             return insets;
         });
 
+        // Запрос параметра статуса входа из SharedPreferences для автоматического входа в приложение.
+        if (getSharedPreferences("Account", MODE_PRIVATE)
+                .getBoolean("logged_in", false))
+        {
+            Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
+            startActivity(MainIntent);
+        }
+
         emailEntry = findViewById(R.id.emailEditText);
         passwordEntry = findViewById(R.id.passwordEditText);
         logInButton = findViewById(R.id.loginButton);
@@ -88,13 +97,20 @@ public class LogInActivity extends AppCompatActivity
 
                 switch (responseParts[0])
                 {
-                    // Если вход успешен, управление передаётся в MainActivity, с параметрами
-                    // имени и почты.
+                    // Если вход успешен, управление передаётся в MainActivity.
+                    // Статус входа, имя, email, роль и пароль сохраняются в SharedPreferences.
                     case("success"):
                     {
-                        Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class)
-                                .putExtra("name", responseParts[1])
-                                .putExtra("email",responseParts[2]);
+                        SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                        SharedPreferences.Editor prefEditor = settings.edit();
+                        prefEditor.putBoolean("logged_in", true);
+                        prefEditor.putString("name", responseParts[1]);
+                        prefEditor.putString("email", responseParts[2]);
+                        prefEditor.putString("user_type", responseParts[3]);
+                        prefEditor.putString("password", responseParts[4]);
+                        prefEditor.apply();
+
+                        Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
                         startActivity(MainIntent);
                         break;
                     }

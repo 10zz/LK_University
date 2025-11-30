@@ -16,6 +16,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.courseproject.mlkuniversity.main_ui_fragments.finance_fragment.FinanceFragment;
+import com.courseproject.mlkuniversity.main_ui_fragments.fqw_fragment.FQWFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.home_fragment.HomeFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.schedule_fragment.ScheduleFragment;
 import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyFragment;
@@ -26,8 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MainActivity extends AppCompatActivity
 {
-
-    private static final int NAM_PAGES = 4;
+    private static int NAM_PAGES, tabTextId;
     private ViewPager2 viewPager2;
     private FragmentStateAdapter pagerAdapter;
     private ImageButton profileButton;
@@ -50,29 +50,40 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v)
             {
-                Bundle arguments = getIntent().getExtras();
-
-                Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class)
-                    .putExtra("name", "тфьу")
-                    .putExtra("email", "уьфшд");
-                // TODO: .putExtra("role", "тфьу")
-
-                /* TODO: Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class)
-                        .putExtra("name", arguments.getString("name"))
-                        .putExtra("email", arguments.getString("email"));*/
+                Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(ProfileIntent);
             }
         });
 
         viewPager2 = findViewById(R.id.pager);
-        pagerAdapter = new ScreenSlidePageAdapter(this);
-        viewPager2.setAdapter(pagerAdapter);
+        /*if (arguments != null)
+        {
+            if (arguments.getString("role") == "student")
+            {*/
+                /*pagerAdapter = new StudentScreenSlidePageAdapter(this);
+                tabTextId = R.array.student_main_tab_ui;
+                NAM_PAGES = 4;*/
+            /*}
+            else if (arguments.getString("role") == "teacher")
+            {*/
+                pagerAdapter = new TeacherScreenSlidePageAdapter(this);
+                tabTextId = R.array.teacher_main_tab_ui;
+                NAM_PAGES = 2;
+            //}
+            viewPager2.setAdapter(pagerAdapter);
+        /*}
+        else
+        {
+            Intent LoginIntent = new Intent(MainActivity.this, LogInActivity.class);
+            startActivity(LoginIntent);
+        }*/
+
 
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy()
                 {
-                    String[] tabText = getResources().getStringArray(R.array.main_tab_ui);
+                    String[] tabText = getResources().getStringArray(tabTextId);
                     @Override
                     public void onConfigureTab(TabLayout.Tab tab, int position)
                     {
@@ -83,9 +94,9 @@ public class MainActivity extends AppCompatActivity
         tabLayoutMediator.attach();
     }
 
-    private class ScreenSlidePageAdapter extends FragmentStateAdapter
+    private static class StudentScreenSlidePageAdapter extends FragmentStateAdapter
     {
-        public ScreenSlidePageAdapter(MainActivity mainActivity) {
+        public StudentScreenSlidePageAdapter(MainActivity mainActivity) {
             super(mainActivity);
         }
 
@@ -102,6 +113,32 @@ public class MainActivity extends AppCompatActivity
                     return new ScheduleFragment();
                 case 3:
                     return new FinanceFragment();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return NAM_PAGES;
+        }
+    }
+
+    private static class TeacherScreenSlidePageAdapter extends FragmentStateAdapter
+    {
+        public TeacherScreenSlidePageAdapter(MainActivity mainActivity) {
+            super(mainActivity);
+        }
+
+        @NonNull
+        @NotNull
+        @Override
+        public Fragment createFragment(int position) {
+            switch (position) {
+                case 0:
+                    return new FQWFragment();
+                case 1:
+                    return new ScheduleFragment();
                 default:
                     return null;
             }

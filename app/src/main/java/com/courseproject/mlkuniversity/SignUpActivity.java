@@ -1,6 +1,7 @@
 package com.courseproject.mlkuniversity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -73,7 +74,9 @@ public class SignUpActivity extends AppCompatActivity
         @Override
         public void onClick(View v) {
             // Если нажата кнопка входа.
-            if (v.getId() == R.id.loginButton) {
+            if (v.getId() == R.id.loginButton)
+            {
+                // Переход в LogInActivity с текстом из полей email и password.
                 Intent LogInIntent = new Intent(SignUpActivity.this, LogInActivity.class)
                         .putExtra("email", emailEntry.getText().toString())
                         .putExtra("password", passwordEntry.getText().toString());
@@ -91,31 +94,41 @@ public class SignUpActivity extends AppCompatActivity
                 // Разбиение ответа на подстроки.
                 String[] responseParts = responseResult.split("\n");
 
-                switch (responseParts[0]) {
-                    // Если вход успешен, управление передаётся в MainActivity, с параметрами
-                    // имени, почты, СНИЛСа и номера паспорта.
-                    case ("success"): {
-                        Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class)
-                                .putExtra("name", responseParts[1])
-                                .putExtra("email", responseParts[2])
-                                .putExtra("SNILS", responseParts[3])
-                                .putExtra("ID", responseParts[4]);
+                switch (responseParts[0])
+                {
+                    // Если вход успешен, управление передаётся в MainActivity.
+                    // Статус входа, имя, email, роль и пароль сохраняются в SharedPreferences.
+                    case ("success"):
+                    {
+                        SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                        SharedPreferences.Editor prefEditor = settings.edit();
+                        prefEditor.putBoolean("logged_in", true);
+                        prefEditor.putString("name", responseParts[1]);
+                        prefEditor.putString("email", responseParts[2]);
+                        prefEditor.putString("user_type", responseParts[3]);
+                        prefEditor.putString("password", responseParts[4]);
+                        prefEditor.apply();
+
+                        Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class);
                         startActivity(MainIntent);
                         break;
                     }
                     // Если пользователя не найдено в БД, выводится соответствующее сообщение
                     // об ошибке.
-                    case ("failure"): {
+                    case ("failure"):
+                    {
                         errorTextView.setText(R.string.signup_server_error);
                         break;
                     }
                     // Если отправленный запрос не является POST, выводится сообщение об ошибке
                     // в API.
-                    case ("failed, an error occurred"): {
+                    case ("failed, an error occurred"):
+                    {
                         errorTextView.setText(R.string.api_error_message);
                         break;
                     }
-                    default: {
+                    default:
+                    {
                         errorTextView.setText(R.string.login_unknown_error_message);
                     }
                 }
