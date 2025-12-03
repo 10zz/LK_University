@@ -1,7 +1,14 @@
 <resources>
     <string name="app_name">LK University</string>
     <!-- Если успеем, то можем в будущем заменить на реальный домен -->
-    <string name="base_url">http://10.0.2.2</string>
+    <string name="base_url">http://10.0.2.2/</string>
+    <string name="login_request">login.php</string>
+    <string name="signup_request">signup.php</string>
+    <string name="home_request">home.php</string>
+    <string name="study_request">study.php</string>
+    <string name="schedule_request">schedule.php</string>
+    <string name="finance_request">finance.php</string>
+
     <string name="login_error_message">Данный пользователь не найден в системе</string>
     <string name="api_error_message">Ошибка в API</string>
     <string name="login_unknown_error_message">Неизвeстная ошибка</string>
@@ -17,6 +24,5 @@
         <item>Руководителю ВКР</item>
         <item>Расписание</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

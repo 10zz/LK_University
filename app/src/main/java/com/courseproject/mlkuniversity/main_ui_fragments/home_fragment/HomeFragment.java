@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -42,10 +45,22 @@ public class HomeFragment extends Fragment {
     }
 
 
-    // Тестовые значения.
     private void setInitialData()
     {
-        // TODO: PHP скрипт с запросом данных уведомлений.
+        /*HTTPRequests request = new HTTPRequests();
+        JSONObject[] responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.home_request));
+
+        for (JSONObject object : responseJSON)
+            try {
+                homeListItems.add(new HomeListItem(object.getString("title"),
+                        object.getString("description")
+                ));
+            }
+            catch (JSONException e)
+            {
+                throw new RuntimeException(e);
+            }*/
+        // Тестовые значения.
         homeListItems.add(new HomeListItem("Бразилия", "Бразилиа"));
         homeListItems.add(new HomeListItem("Аргентина", "Буэнос-Айрес"));
         homeListItems.add(new HomeListItem("Колумбия", "Богота"));

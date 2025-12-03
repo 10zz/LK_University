@@ -9,30 +9,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.io.IOException;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
 
 public class LogInActivity extends AppCompatActivity
 {
-     EditText emailEntry, passwordEntry;
+    EditText emailEntry, passwordEntry;
     Button logInButton, registerButton, passwordRecoveryButton;
     TextView errorTextView;
     OkHttpClient httpClient;
-    // Возвращаемое значение метода logInRequest.
-    String responseResult;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -84,35 +78,44 @@ public class LogInActivity extends AppCompatActivity
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
-                // Выполняется POST-запрос входа на сервер, возвращается строка responseResult.
-                logInRequest();
-                // Проверка строки на наличие символов.
-                if (responseResult == null || responseResult.isEmpty())
-                {
-                    errorTextView.setText(R.string.login_empty_response_error_message);
-                    return;
-                }
-                // Разбиение ответа на подстроки.
-                String[] responseParts = responseResult.split("\n");
+                HTTPRequests request = new HTTPRequests();
+                JSONObject response = request.logInPostRequest(LogInActivity.this, emailEntry.getText().toString(), passwordEntry.getText().toString());
 
-                switch (responseParts[0])
+                String loginStatus;
+                try
+                {
+                    loginStatus = response.getString("status");
+                }
+                catch (JSONException e)
+                {
+                    throw new RuntimeException(e);
+                }
+
+                switch (loginStatus)
                 {
                     // Если вход успешен, управление передаётся в MainActivity.
                     // Статус входа, имя, email, роль и пароль сохраняются в SharedPreferences.
                     case("success"):
                     {
-                        SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
-                        SharedPreferences.Editor prefEditor = settings.edit();
-                        prefEditor.putBoolean("logged_in", true);
-                        prefEditor.putString("name", responseParts[1]);
-                        prefEditor.putString("email", responseParts[2]);
-                        prefEditor.putString("user_type", responseParts[3]);
-                        prefEditor.putString("password", responseParts[4]);
-                        prefEditor.apply();
+                        try
+                        {
+                            SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                            SharedPreferences.Editor prefEditor = settings.edit();
+                            prefEditor.putBoolean("logged_in", true);
+                            prefEditor.putString("name", response.getString("name"));
+                            prefEditor.putString("email", response.getString("email"));
+                            prefEditor.putString("user_type", response.getString("user_type"));
+                            prefEditor.putString("password", response.getString("password"));
+                            prefEditor.apply();
 
-                        Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
-                        startActivity(MainIntent);
-                        break;
+                            Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
+                            startActivity(MainIntent);
+                            break;
+                        }
+                        catch (JSONException e)
+                        {
+                            throw new RuntimeException(e);
+                        }
                     }
                     // Если пользователя не найдено в БД, выводится соответствующее сообщение
                     // об ошибке.
@@ -154,39 +157,4 @@ public class LogInActivity extends AppCompatActivity
                 System.out.println("Unknown button");
         }
     };
-
-    // отправляет POST-запрос с паролем и почтой на сервер для проверки регистрации.
-    private void logInRequest()
-    {
-
-        final String emailString = emailEntry.getText().toString();
-        final String passwordString = passwordEntry.getText().toString();
-
-        RequestBody requestBody = new FormBody.Builder()
-                .add("email",emailString)
-                .add("password",passwordString)
-                .build();
-        Request request = new Request.Builder().url(getString(R.string.base_url)).post(requestBody).build();
-
-        httpClient.newCall(request).enqueue(new Callback()
-        {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {}
-
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException
-            {
-                runOnUiThread(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        try
-                        { responseResult = response.body().string(); }
-                        catch (IOException e) { throw new RuntimeException(e); }
-                    }
-                });
-            }
-        });
-    }
 }

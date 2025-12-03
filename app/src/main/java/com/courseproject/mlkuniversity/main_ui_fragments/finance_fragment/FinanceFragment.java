@@ -11,9 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -41,12 +44,27 @@ public class FinanceFragment extends Fragment {
         return rootView;
     }
 
-
-    // Тестовые значения.
+    
     private void setInitialData()
     {
-        // TODO: PHP скрипт с запросом данных для конкретного пользователя.
+        /*HTTPRequests request = new HTTPRequests();
+        JSONObject[] response = request.financePostRequest(this.getContext());
 
+        for (JSONObject object : response)
+            try
+            {
+                financeListItems.add(new FinanceListItem(
+                        object.getString("operation"),
+                        object.getString("operationType"),
+                        object.getString("operationType"),
+                        object.getString("paymentDate")
+                ));
+            }
+            catch (JSONException e)
+            {
+                throw new RuntimeException(e);
+            }*/
+        // Тестовые значения.
         financeListItems.add(new FinanceListItem("Бразилия", "Бразилиа", "23", "23.12.2333"));
         financeListItems.add(new FinanceListItem("Аргентина", "Буэнос-Айрес", "23", "23.12.2333"));
         financeListItems.add(new FinanceListItem("Колумбия", "Богота", "23", "23.12.2333"));
