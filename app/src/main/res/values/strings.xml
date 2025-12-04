@@ -25,4 +25,14 @@
         <item>Расписание</item>
     </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="LK">ЛИЧНЫЙ КАБИНЕТ</string>
+    <string name="of_student_and_employee">студента и сотрудника</string>
+    <string name="Email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="LogIn">Войти</string>
+    <string name="SignUp">Зарегестрироваться</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="password_reset"><font color="#44AD57">Ваш пароль был сброшен!</font></string>
+    <string name="support_text">Техническая поддержка - lk@nngasu.ru</string>
 </resources>
