@@ -78,7 +78,7 @@ public class LogInActivity extends AppCompatActivity
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
-                HTTPRequests request = new HTTPRequests();
+                /*HTTPRequests request = new HTTPRequests();
                 JSONObject response = request.logInPostRequest(LogInActivity.this, emailEntry.getText().toString(), passwordEntry.getText().toString());
 
                 String loginStatus;
@@ -135,7 +135,10 @@ public class LogInActivity extends AppCompatActivity
                     {
                         errorTextView.setText(R.string.login_unknown_error_message);
                     }
-                }
+                }*/
+                // Потом убрать
+                Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
+                startActivity(MainIntent);
             }
             // Если нажата кнопка регистрации.
             else if (v.getId() == R.id.registerButton)

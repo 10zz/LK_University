@@ -77,7 +77,7 @@ public class ProfileActivity extends AppCompatActivity
             // Смена пароля.
             else if (v.getId() == R.id.changePasswordButton)
             {
-                if (newPasswordEntry.getText() == verifyPasswordEntry.getText())
+                if (newPasswordEntry.getText().toString().equals(verifyPasswordEntry.getText().toString()))
                 {
                     // TODO: PHP скрипт смены пароля.
                 }

@@ -78,7 +78,7 @@ public class SignUpActivity extends AppCompatActivity
             }
             // Если нажата кнопка регистрации.
             else if (v.getId() == R.id.registerButton) {
-                HTTPRequests request = new HTTPRequests();
+                /*HTTPRequests request = new HTTPRequests();
                 JSONObject response = request.SignUpPostRequest(SignUpActivity.this,
                         emailEntry.getText().toString(),
                         passwordEntry.getText().toString(),
@@ -139,7 +139,10 @@ public class SignUpActivity extends AppCompatActivity
                     {
                         errorTextView.setText(R.string.login_unknown_error_message);
                     }
-                }
+                }*/
+                // Потом убрать
+                Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class);
+                startActivity(MainIntent);
             }
             else
                 System.out.println("Unknown button");

@@ -56,7 +56,7 @@ public class FinanceFragment extends Fragment {
                 financeListItems.add(new FinanceListItem(
                         object.getString("operation"),
                         object.getString("operationType"),
-                        object.getString("operationType"),
+                        object.getString("sum"),
                         object.getString("paymentDate")
                 ));
             }

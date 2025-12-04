@@ -44,8 +44,7 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
         StudyListItem studyListItem = studyListItems.get(position);
         holder.headerView.setText(studyListItem.getHeader());
         holder.descriptionView.setText(studyListItem.getDescription());
-        holder.iconView.setImageBitmap(studyListItem.getIcon());
-        // TODO: сеттер для иконки.
+        //holder.iconView.setImageBitmap(studyListItem.getIcon());
     }
 
 

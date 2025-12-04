@@ -6,14 +6,14 @@ public class StudyListItem
 {
     private String header;
     private String description;
-    private Bitmap icon;
+//    private Bitmap icon;
 
 
-    public StudyListItem(String header, String description, Bitmap icon)
+    public StudyListItem(String header, String description)//, Bitmap icon)
     {
         this.header = header;
         this.description = description;
-        this.icon = icon;
+        //this.icon = icon;
     }
 
     public String getHeader()
@@ -36,11 +36,11 @@ public class StudyListItem
         this.description = description;
     }
 
-    public Bitmap getIcon() {
+/*    public Bitmap getIcon() {
         return icon;
     }
 
     public void setIcon(Bitmap icon) {
         this.icon = icon;
-    }
+    }*/
 }
