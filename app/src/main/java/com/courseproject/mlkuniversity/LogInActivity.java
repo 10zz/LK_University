@@ -2,6 +2,7 @@ package com.courseproject.mlkuniversity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,7 @@ import okhttp3.OkHttpClient;
 public class LogInActivity extends AppCompatActivity
 {
     EditText emailEntry, passwordEntry;
-    Button logInButton, registerButton, passwordRecoveryButton;
+    Button logInButton, registerButton, passwordRecoveryButton,/* TODO: Потом убрать*/ temp_teacherVersionButton;
     TextView errorTextView;
     OkHttpClient httpClient;
 
@@ -57,6 +58,10 @@ public class LogInActivity extends AppCompatActivity
         registerButton.setOnClickListener(buttonListener);
         passwordRecoveryButton.setOnClickListener(buttonListener);
 
+        // TODO: Потом убрать
+        temp_teacherVersionButton = findViewById(R.id.temp_teacherVersionButton);
+        temp_teacherVersionButton.setOnClickListener(buttonListener);
+
         httpClient = new OkHttpClient();
 
         // Передача значений из SignUpActivity в текстовые поля.
@@ -73,6 +78,8 @@ public class LogInActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
+            SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+            SharedPreferences.Editor prefEditor = settings.edit();
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
@@ -134,8 +141,10 @@ public class LogInActivity extends AppCompatActivity
                         errorTextView.setText(R.string.login_unknown_error_message);
                     }
                 }*/
-                // Потом убрать
+                // TODO: Потом убрать
                 Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
+                prefEditor.putString("user_type", "student");
+                prefEditor.apply();
                 startActivity(MainIntent);
             }
             // Если нажата кнопка регистрации.
@@ -153,6 +162,14 @@ public class LogInActivity extends AppCompatActivity
                 Intent SignUpIntent = new Intent(LogInActivity.this, PasswordRecoveryActivity.class)
                         .putExtra("email", emailEntry.getText().toString());
                 startActivity(SignUpIntent);
+            }
+            // TODO: Потом убрать
+            else if (v.getId() == R.id.temp_teacherVersionButton)
+            {
+                Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
+                prefEditor.putString("user_type", "teacher");
+                prefEditor.apply();
+                startActivity(MainIntent);
             }
             else
                 System.out.println("Unknown button");
