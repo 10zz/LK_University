@@ -60,15 +60,15 @@ public class MainActivity extends AppCompatActivity
         {
             if (arguments.getString("role") == "student")
             {*/
-                /*pagerAdapter = new StudentScreenSlidePageAdapter(this);
+                pagerAdapter = new StudentScreenSlidePageAdapter(this);
                 tabTextId = R.array.student_main_tab_ui;
-                NAM_PAGES = 4;*/
+                NAM_PAGES = 4;
             /*}
             else if (arguments.getString("role") == "teacher")
             {*/
-                pagerAdapter = new TeacherScreenSlidePageAdapter(this);
+                /*pagerAdapter = new TeacherScreenSlidePageAdapter(this);
                 tabTextId = R.array.teacher_main_tab_ui;
-                NAM_PAGES = 2;
+                NAM_PAGES = 2;*/
             //}
             viewPager2.setAdapter(pagerAdapter);
         /*}
