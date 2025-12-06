@@ -22,7 +22,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/emailEditText7"
+                android:id="@+id/verifyPasswordEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -46,11 +46,11 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/confirm_password"
                 android:textColor="#5C5E60"
-                app:layout_constraintStart_toStartOf="@+id/emailEditText7"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText6" />
+                app:layout_constraintStart_toStartOf="@+id/verifyPasswordEditText"
+                app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
             <EditText
-                android:id="@+id/emailEditText6"
+                android:id="@+id/passwordEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -74,7 +74,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/password"
                 android:textColor="#5C5E60"
-                app:layout_constraintStart_toStartOf="@+id/emailEditText6"
+                app:layout_constraintStart_toStartOf="@+id/passwordEditText"
                 app:layout_constraintTop_toBottomOf="@+id/IDEditText" />
 
             <EditText
@@ -131,10 +131,10 @@
                 android:text="@string/SNILS"
                 android:textColor="#5C5E60"
                 app:layout_constraintStart_toStartOf="@+id/SNILSEditText"
-                app:layout_constraintTop_toBottomOf="@+id/emailEditText3" />
+                app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
             <EditText
-                android:id="@+id/emailEditText3"
+                android:id="@+id/emailEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -158,7 +158,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/Email"
                 android:textColor="#5C5E60"
-                app:layout_constraintStart_toStartOf="@+id/emailEditText3"
+                app:layout_constraintStart_toStartOf="@+id/emailEditText"
                 app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
             <Button
@@ -173,7 +173,7 @@
                 app:cornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/registerButton"
-                app:layout_constraintStart_toStartOf="@+id/emailEditText7"
+                app:layout_constraintStart_toStartOf="@+id/verifyPasswordEditText"
                 app:strokeColor="#5C5E60"
                 app:strokeWidth="1dp" />
 
@@ -186,7 +186,7 @@
                 android:textStyle="bold"
                 app:cornerRadius="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/returnButton"
-                app:layout_constraintEnd_toEndOf="@+id/emailEditText7"
+                app:layout_constraintEnd_toEndOf="@+id/verifyPasswordEditText"
                 app:layout_constraintStart_toEndOf="@id/returnButton" />
 
             <ImageView

@@ -1,6 +1,7 @@
 package com.courseproject.mlkuniversity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -56,23 +57,22 @@ public class MainActivity extends AppCompatActivity
         });
 
         viewPager2 = findViewById(R.id.pager);
-        /*if (arguments != null)
-        {
-            if (arguments.getString("role") == "student")
-            {*/
+        SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+            if (settings.getString("user_type", "err").equals("student"))
+            {
                 pagerAdapter = new StudentScreenSlidePageAdapter(this);
                 tabTextId = R.array.student_main_tab_ui;
                 NAM_PAGES = 4;
-            /*}
-            else if (arguments.getString("role") == "teacher")
-            {*/
-                /*pagerAdapter = new TeacherScreenSlidePageAdapter(this);
+            }
+            else if (settings.getString("user_type", "err").equals("teacher"))
+            {
+                pagerAdapter = new TeacherScreenSlidePageAdapter(this);
                 tabTextId = R.array.teacher_main_tab_ui;
-                NAM_PAGES = 2;*/
-            //}
+                NAM_PAGES = 2;
+            }
             viewPager2.setAdapter(pagerAdapter);
-        /*}
-        else
+
+        /*else
         {
             Intent LoginIntent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(LoginIntent);
@@ -87,8 +87,54 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onConfigureTab(TabLayout.Tab tab, int position)
                     {
-                        tab.setText(tabText[position])
-                                .setIcon(R.drawable.ic_launcher_foreground);
+                        if (settings.getString("user_type", "err").equals("student"))
+                            switch (position)
+                            {
+                                case (0):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.ic_launcher_foreground); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (1):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.profile_pic); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (2):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.logout_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (3):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.ic_launcher_foreground); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                default:
+                                    System.out.println("Icons err");
+                            }
+                        else if (settings.getString("user_type", "err").equals("teacher"))
+                            switch (position)
+                            {
+                                case (0):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.ic_launcher_foreground); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (1):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.logout_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                default:
+                                    System.out.println("Icons err");
+                            }
                     }
         });
         tabLayoutMediator.attach();

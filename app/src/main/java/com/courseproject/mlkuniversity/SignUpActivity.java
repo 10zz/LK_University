@@ -42,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity
         IDEntry = findViewById(R.id.IDEditText);
         passwordEntry = findViewById(R.id.passwordEditText);
         verifyPasswordEntry = findViewById(R.id.verifyPasswordEditText);
-        logInButton = findViewById(R.id.loginButton);
+        logInButton = findViewById(R.id.returnButton);
         registerButton = findViewById(R.id.registerButton);
         errorTextView = findViewById(R.id.password_reset);
 
@@ -66,7 +66,7 @@ public class SignUpActivity extends AppCompatActivity
         @Override
         public void onClick(View v) {
             // Если нажата кнопка входа.
-            if (v.getId() == R.id.loginButton)
+            if (v.getId() == R.id.returnButton)
             {
                 // Переход в LogInActivity с текстом из полей email и password.
                 Intent LogInIntent = new Intent(SignUpActivity.this, LogInActivity.class)
