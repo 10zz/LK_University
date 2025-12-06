@@ -5,81 +5,79 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ScrollView
+    <View
+        android:id="@+id/decorative_line"
+        android:layout_width="407dp"
+        android:layout_height="2dp"
+        android:background="#90969C"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/decorative_line">
 
-        <TableLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dayText">
+            android:layout_height="match_parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/subjectTitleText"
+                android:layout_width="310dp"
+                android:layout_height="wrap_content"
+                android:text="subject"
+                android:textColor="#070707"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/subjectTitleText"
-                    android:layout_width="310dp"
-                    android:layout_height="wrap_content"
-                    android:text="subject"
-                    android:textColor="#070707"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/timeIntervalText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="timeInteval" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/timeIntervalText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="timeInteval" />
-            </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/teacherText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="roboto"
+                android:text="teacher"
+                android:textColor="#2874FF" />
 
-                <TextView
-                    android:id="@+id/teacherText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="roboto"
-                    android:text="teacher"
-                    android:textColor="#2874FF" />
+            <TextView
+                android:id="@+id/auditoryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#99CEFF"
+                android:text="auditory"
+                android:textSize="12sp" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/auditoryText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#99CEFF"
-                    android:text="auditory"
-                    android:textSize="12sp" />
-            </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/groupText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="group"
+                android:textColor="#90969C" />
 
-                <TextView
-                    android:id="@+id/groupText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="group"
-                    android:textColor="#90969C" />
+        </TableRow>
 
-            </TableRow>
-
-        </TableLayout>
-
-    </ScrollView>
+    </TableLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

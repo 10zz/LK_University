@@ -32,8 +32,8 @@
 
         <ImageButton
             android:id="@+id/returnButton"
-            android:layout_width="64dp"
-            android:layout_height="58dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/logout_icon"
             app:layout_constraintBottom_toBottomOf="parent"

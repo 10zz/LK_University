@@ -52,7 +52,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="16dp"
-                        android:text="еще текст"
+                        android:text="@string/schedule_text"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="@+id/pageTitle"
                         app:layout_constraintTop_toBottomOf="@+id/pageTitle" />
@@ -139,11 +139,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@color/white"
+                android:background="@android:color/transparent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/dateIntervalStartButton"
                 app:layout_constraintTop_toBottomOf="@+id/dateIntervalStartButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -62,4 +62,5 @@
     <string name="teacher_choice">Выбор преподавателя</string>
     <string name="to_the_supervisor">Руководителю ВКР</string>
     <string name="student_list">СПИСОК СТУДЕНТОВ</string>
+    <string name="schedule_text">Для удобного просмотра расписания также доступен чат-бот: @Official_NNGASU_LK_bot</string>
 </resources>
