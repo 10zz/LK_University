@@ -54,4 +54,12 @@
     <string name="change_profile_picture_button">Выбрать фото</string>
     <string name="change_password_text">Сменить пароль</string>
     <string name="account_exit_button">Выйти</string>
+    <string name="finances">Финансы</string>
+    <string name="follow">Перейти</string>
+    <string name="start_date">Дата начала</string>
+    <string name="end_date">Дата конца</string>
+    <string name="group_choice">Выбор группы</string>
+    <string name="teacher_choice">Выбор преподавателя</string>
+    <string name="to_the_supervisor">Руководителю ВКР</string>
+    <string name="student_list">СПИСОК СТУДЕНТОВ</string>
 </resources>

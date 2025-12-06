@@ -8,7 +8,9 @@
         android:id="@+id/dayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="roboto"
         android:text="ДЕНЬ"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -16,7 +18,9 @@
         android:id="@+id/dateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="roboto"
         android:text="ДАТА"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,7 +40,10 @@
                 android:id="@+id/subjectTitleText"
                 android:layout_width="310dp"
                 android:layout_height="wrap_content"
-                android:text="subject" />
+                android:text="subject"
+                android:textColor="#070707"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/timeIntervalText"
@@ -53,13 +60,17 @@
                 android:id="@+id/teacherText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="teacher" />
+                android:fontFamily="roboto"
+                android:text="teacher"
+                android:textColor="#2874FF" />
 
             <TextView
                 android:id="@+id/auditoryText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="auditory" />
+                android:background="#99CEFF"
+                android:text="auditory"
+                android:textSize="12sp" />
         </TableRow>
 
         <TableRow
@@ -70,7 +81,8 @@
                 android:id="@+id/groupText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="group" />
+                android:text="group"
+                android:textColor="#90969C" />
 
         </TableRow>
 
