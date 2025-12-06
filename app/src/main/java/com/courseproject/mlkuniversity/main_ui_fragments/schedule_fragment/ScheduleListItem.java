@@ -1,61 +1,26 @@
 package com.courseproject.mlkuniversity.main_ui_fragments.schedule_fragment;
 
+import java.util.ArrayList;
+
 public class ScheduleListItem
 {
-    private String day, date, subject, teacher, group, timeInterval, auditory;
+    private String day, date;
+    private ArrayList<ScheduleSubListItem> scheduleSubListItems = new ArrayList<>();
 
 
-    public ScheduleListItem(String day, String date, String subject, String teacher, String group,
-                         String timeInterval, String auditory)
+    public ScheduleListItem(String day, String date, ArrayList<ScheduleSubListItem> scheduleSubListItems)
     {
         this.day = day;
         this.date = date;
-        this.subject = subject;
-        this.teacher = teacher;
-        this.group = group;
-        this.timeInterval = timeInterval;
-        this.auditory = auditory;
+        this.scheduleSubListItems = scheduleSubListItems;
     }
 
-
-    public String getAuditory() {
-        return auditory;
+    public ArrayList<ScheduleSubListItem> getScheduleSubListItems() {
+        return scheduleSubListItems;
     }
 
-    public void setAuditory(String auditory) {
-        this.auditory = auditory;
-    }
-
-    public String getTimeInterval() {
-        return timeInterval;
-    }
-
-    public void setTimeInterval(String timeInterval) {
-        this.timeInterval = timeInterval;
-    }
-
-    public String getGroup() {
-        return group;
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setScheduleSubListItems(ArrayList<ScheduleSubListItem> scheduleSubListItems) {
+        this.scheduleSubListItems = scheduleSubListItems;
     }
 
     public String getDate() {

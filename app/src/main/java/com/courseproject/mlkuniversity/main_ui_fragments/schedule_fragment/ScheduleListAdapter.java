@@ -43,11 +43,10 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
         ScheduleListItem scheduleListItem = scheduleListItems.get(position);
         holder.dayText.setText(scheduleListItem.getDay());
         holder.dateText.setText(scheduleListItem.getDate());
-        holder.subjectTitleText.setText(scheduleListItem.getSubject());
-        holder.timeIntervalText.setText(scheduleListItem.getTimeInterval());
-        holder.teacherText.setText(scheduleListItem.getTeacher());
-        holder.auditoryText.setText(scheduleListItem.getAuditory());
-        holder.groupText.setText(scheduleListItem.getGroup());
+
+        ScheduleSubListAdapter subAdapter = new ScheduleSubListAdapter(inflater.getContext(), scheduleListItem.getScheduleSubListItems());
+        holder.SubItemRecycleView.setAdapter(subAdapter);
+
     }
 
 
@@ -62,19 +61,15 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
     // Использует определенные в list_item_schedule.xml элементы View.
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
-        final TextView dayText, dateText, subjectTitleText, timeIntervalText, teacherText, auditoryText, groupText;
-
+        final TextView dayText, dateText;
+        final RecyclerView SubItemRecycleView;
 
         ViewHolder(View view)
         {
             super(view);
             dayText = view.findViewById(R.id.dayText);
             dateText = view.findViewById(R.id.dateText);
-            subjectTitleText = view.findViewById(R.id.subjectTitleText);
-            timeIntervalText = view.findViewById(R.id.timeIntervalText);
-            teacherText = view.findViewById(R.id.teacherText);
-            auditoryText = view.findViewById(R.id.auditoryText);
-            groupText = view.findViewById(R.id.groupText);
+            SubItemRecycleView = view.findViewById(R.id.list);
         }
     }
 }
