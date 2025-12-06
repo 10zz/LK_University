@@ -11,12 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -56,7 +53,7 @@ public class FinanceFragment extends Fragment {
                 financeListItems.add(new FinanceListItem(
                         object.getString("operation"),
                         object.getString("operationType"),
-                        object.getString("sum"),
+                        object.getString("operationType"),
                         object.getString("paymentDate")
                 ));
             }

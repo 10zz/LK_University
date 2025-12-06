@@ -12,8 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.courseproject.mlkuniversity.R;
-import com.courseproject.mlkuniversity.main_ui_fragments.fqw_fragment.FQWListItem;
-import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyListItem;
 
 import org.jetbrains.annotations.NotNull;
 
