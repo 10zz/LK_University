@@ -7,9 +7,9 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="343dp"
-        android:layout_height="637dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,6 +23,8 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="343dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="24dp"
                 app:cardCornerRadius="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"

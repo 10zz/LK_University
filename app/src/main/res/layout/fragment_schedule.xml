@@ -8,9 +8,10 @@
 
     <ScrollView
         android:id="@+id/scrollView2"
-        android:layout_width="343dp"
-        android:layout_height="637dp"
-        android:layout_marginTop="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,6 +25,7 @@
                 android:id="@+id/cardView1"
                 android:layout_width="343dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -131,7 +133,7 @@
                 android:elevation="8dp"
                 android:text="@string/end_date"
                 android:textColor="#181717"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/cardView"
                 app:layout_constraintTop_toTopOf="@+id/dateIntervalStartButton" />
 
             <androidx.recyclerview.widget.RecyclerView
