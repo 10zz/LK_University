@@ -37,6 +37,7 @@ public class ScheduleFragment extends Fragment
         requestData();
         // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
         ScheduleListAdapter adapter = new ScheduleListAdapter(rootView.getContext(), scheduleListItems);
+        recyclerView.setNestedScrollingEnabled(false);
         // 4. Созданный адаптер задаётся для текущего фрагмента.
         recyclerView.setAdapter(adapter);
         
