@@ -17,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class FinanceFragment extends Fragment {
+
+public class FinanceFragment extends Fragment
+{
     ArrayList<FinanceListItem> financeListItems = new ArrayList<>();
 
 
@@ -28,22 +30,22 @@ public class FinanceFragment extends Fragment {
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
     {
-        // Создается объект inflater и RecyclerView этого фрагмента.
+        // 1. Создается объект inflater и RecyclerView этого фрагмента.
         View rootView = inflater.inflate(R.layout.fragment_finance, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        // Заполняется массив значений списка.
-        setInitialData();
-        // Создаётся объект адаптера с передачей фрагмента и массива значений списка.
+        // 2. Заполняется массив значений списка.
+        requestData();
+        // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
         FinanceListAdapter adapter = new FinanceListAdapter(rootView.getContext(), financeListItems);
-        // Созданный адаптер задаётся для текущего фрагмента.
+        // 4. Созданный адаптер задаётся для текущего фрагмента.
         recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
-    
-    private void setInitialData()
+    private void requestData()
     {
+        // TODO
         /*HTTPRequests request = new HTTPRequests();
         JSONObject[] response = request.financePostRequest(this.getContext());
 

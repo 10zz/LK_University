@@ -40,7 +40,7 @@ public class LogInActivity extends AppCompatActivity
             return insets;
         });
 
-        // Запрос параметра статуса входа из SharedPreferences для автоматического входа в приложение.
+        // 1. Запрос параметра статуса входа из SharedPreferences(logged_in) для автоматического входа в приложение.
         if (getSharedPreferences("Account", MODE_PRIVATE)
                 .getBoolean("logged_in", false))
         {
@@ -48,6 +48,7 @@ public class LogInActivity extends AppCompatActivity
             startActivity(MainIntent);
         }
 
+        // 2. Привязка View-переменных.
         emailEntry = findViewById(R.id.emailEditText);
         passwordEntry = findViewById(R.id.passwordEditText);
         logInButton = findViewById(R.id.loginButton);
@@ -55,13 +56,12 @@ public class LogInActivity extends AppCompatActivity
         passwordRecoveryButton = findViewById(R.id.passwordRecoveryButton);
         errorTextView = findViewById(R.id.errorTextView);
 
+        // 3. Привязка кнопок к слушателю.
         logInButton.setOnClickListener(buttonListener);
         registerButton.setOnClickListener(buttonListener);
         passwordRecoveryButton.setOnClickListener(buttonListener);
 
-        httpClient = new OkHttpClient();
-
-        // Передача значений из SignUpActivity в текстовые поля.
+        // 4. Передача значений из SignUpActivity или PasswordRecoveryActivity в текстовые поля.
         Bundle arguments = getIntent().getExtras();
         if (arguments != null)
         {
@@ -75,11 +75,16 @@ public class LogInActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
+            httpClient = new OkHttpClient();
+
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
+                // 1. Вызов метода logInPostRequest - отправка POST-запроса с введёнными
+                // электронной почтой и паролем.
                 HTTPRequests request = new HTTPRequests();
-                JSONObject response = request.logInPostRequest(LogInActivity.this, emailEntry.getText().toString(), passwordEntry.getText().toString());
+                JSONObject response = request.logInPostRequest(LogInActivity.this,
+                        emailEntry.getText().toString(), passwordEntry.getText().toString());
 
                 String loginStatus;
                 try
@@ -91,14 +96,15 @@ public class LogInActivity extends AppCompatActivity
                     throw new RuntimeException(e);
                 }
 
+                // 2. Проверка статуса входа.
                 switch (loginStatus)
                 {
-                    // Если вход успешен, управление передаётся в MainActivity.
-                    // Статус входа, имя, email, роль и пароль сохраняются в SharedPreferences.
                     case("success"):
                     {
                         try
                         {
+                            // 3. Статус входа, имя, email, роль и пароль сохраняются в
+                            // SharedPreferences.
                             SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                             SharedPreferences.Editor prefEditor = settings.edit();
                             prefEditor.putBoolean("logged_in", true);
@@ -108,6 +114,7 @@ public class LogInActivity extends AppCompatActivity
                             prefEditor.putString("password", response.getString("password"));
                             prefEditor.apply();
 
+                            // 4. Переход в MainActivity.
                             Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
                             startActivity(MainIntent);
                             break;
@@ -117,15 +124,13 @@ public class LogInActivity extends AppCompatActivity
                             throw new RuntimeException(e);
                         }
                     }
-                    // Если пользователя не найдено в БД, выводится соответствующее сообщение
-                    // об ошибке.
+                    // Если пользователя не найдено в БД.
                     case("failure"):
                     {
                         errorTextView.setText(R.string.login_error_message);
                         break;
                     }
-                    // Если отправленный запрос не является POST, выводится сообщение об ошибке
-                    // в API.
+                    // Если отправленный запрос не является POST.
                     case("failed, an error occurred"):
                     {
                         errorTextView.setText(R.string.api_error_message);
@@ -140,18 +145,19 @@ public class LogInActivity extends AppCompatActivity
             // Если нажата кнопка регистрации.
             else if (v.getId() == R.id.registerButton)
             {
-                // Осуществляется переход в SignUpActivity с передачей введённого email и пароля.
+                // Переход в SignUpActivity с передачей введённого email и пароля.
                 Intent SignUpIntent = new Intent(LogInActivity.this, SignUpActivity.class)
                         .putExtra("email", emailEntry.getText().toString())
                         .putExtra("password", passwordEntry.getText().toString());
                 startActivity(SignUpIntent);
             }
+            // Если нажата кнопка восстановления пароля.
             else if (v.getId() == R.id.passwordRecoveryButton)
             {
-                // Осуществляется переход в PasswordRecoveryActivity с передачей введённого email.
-                Intent SignUpIntent = new Intent(LogInActivity.this, PasswordRecoveryActivity.class)
+                // Переход в PasswordRecoveryActivity с передачей введённого email.
+                Intent PasswordRecoveryIntent = new Intent(LogInActivity.this, PasswordRecoveryActivity.class)
                         .putExtra("email", emailEntry.getText().toString());
-                startActivity(SignUpIntent);
+                startActivity(PasswordRecoveryIntent);
             }
             else
                 System.out.println("Unknown button");

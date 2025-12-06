@@ -17,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+
 public class FQWFragment extends Fragment
 {
     ArrayList<FQWListItem> fqwListItems = new ArrayList<>();
@@ -29,24 +30,23 @@ public class FQWFragment extends Fragment
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
     {
-        // Создается объект inflater и RecyclerView этого фрагмента.
+        // 1. Создается объект inflater и RecyclerView этого фрагмента.
         View rootView = inflater.inflate(R.layout.fragment_fqw, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        // Заполняется массив значений списка.
+        // 2. Заполняется массив значений списка.
         setInitialData();
-        // Создаётся объект адаптера с передачей фрагмента и массива значений списка.
+        // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
         FQWListAdapter adapter = new FQWListAdapter(rootView.getContext(), fqwListItems);
-        // Созданный адаптер задаётся для текущего фрагмента.
+        // 4. Созданный адаптер задаётся для текущего фрагмента.
         recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
-
-    // Тестовые значения.
     private void setInitialData()
     {
         // TODO: PHP скрипт с запросом данных.
+        // Тестовые значения.
         fqwListItems.add(new FQWListItem("Великобритания", "Лондон", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Мексика", "Мехико", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Норвегия", "Осло", "DRP", "BIG theme"));

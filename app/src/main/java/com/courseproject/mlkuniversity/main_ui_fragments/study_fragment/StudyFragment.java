@@ -21,7 +21,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class StudyFragment extends Fragment {
+public class StudyFragment extends Fragment
+{
     ArrayList<StudyListItem> studyListItems = new ArrayList<>();
 
 
@@ -32,22 +33,20 @@ public class StudyFragment extends Fragment {
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
     {
-        // Создается объект inflater и RecyclerView этого фрагмента.
+        // 1. Создается объект inflater и RecyclerView этого фрагмента.
         View rootView = inflater.inflate(R.layout.fragment_study, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        // Заполняется массив значений списка.
-        setInitialData();
-        // Создаётся объект адаптера с передачей фрагмента и массива значений списка.
+        // 2. Заполняется массив значений списка.
+        requestData();
+        // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
         StudyListAdapter adapter = new StudyListAdapter(rootView.getContext(), studyListItems);
-        // Созданный адаптер задаётся для текущего фрагмента.
+        // 4. Созданный адаптер задаётся для текущего фрагмента.
         recyclerView.setAdapter(adapter);
 
         return rootView;
     }
 
-
-    // Тестовые значения.
-    private void setInitialData()
+    private void requestData()
     {
         HTTPRequests request = new HTTPRequests();
         JSONObject[] responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.study_request));

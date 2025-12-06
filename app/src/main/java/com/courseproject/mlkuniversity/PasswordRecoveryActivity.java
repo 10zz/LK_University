@@ -12,10 +12,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 public class PasswordRecoveryActivity extends AppCompatActivity
 {
     EditText emailEntry;
     Button sendButton, returnButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -29,13 +31,16 @@ public class PasswordRecoveryActivity extends AppCompatActivity
             return insets;
         });
 
+        // 1. Привязка View-переменных.
         emailEntry = findViewById(R.id.emailEditText);
         sendButton = findViewById(R.id.sendButton);
         returnButton = findViewById(R.id.returnButton);
 
+        // 2. Привязка кнопок к слушателю.
         sendButton.setOnClickListener(buttonListener);
         returnButton.setOnClickListener(buttonListener);
 
+        // 3. Передача значений из LogInActivity в текстовые поля.
         Bundle arguments = getIntent().getExtras();
         if (arguments != null)
             emailEntry.setText(arguments.getString("email"));
@@ -46,7 +51,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            // Если нажата кнопка входа.
+            // Если нажата кнопка отправки.
             if (v.getId() == R.id.sendButton)
             {
                 // TODO: Я хз как это делать.

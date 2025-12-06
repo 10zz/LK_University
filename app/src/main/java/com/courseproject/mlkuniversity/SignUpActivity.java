@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import okhttp3.OkHttpClient;
 
+
 public class SignUpActivity extends AppCompatActivity
 {
     EditText emailEntry, SNILSEntry, IDEntry, passwordEntry, verifyPasswordEntry;
@@ -39,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity
             return insets;
         });
 
+        // 1. Привязка View-переменных.
         emailEntry = findViewById(R.id.emailEditText);
         SNILSEntry = findViewById(R.id.SNILSEditText);
         IDEntry = findViewById(R.id.IDEditText);
@@ -48,12 +50,11 @@ public class SignUpActivity extends AppCompatActivity
         registerButton = findViewById(R.id.registerButton);
         errorTextView = findViewById(R.id.errorTextView);
 
+        // 2. Привязка кнопок к слушателю.
         logInButton.setOnClickListener(buttonListener);
         registerButton.setOnClickListener(buttonListener);
 
-        httpClient = new OkHttpClient();
-
-        // Передача значений из LogInActivity в текстовые поля.
+        // 3. Передача значений из LogInActivity в текстовые поля.
         Bundle arguments = getIntent().getExtras();
         if (arguments != null)
         {
@@ -62,11 +63,13 @@ public class SignUpActivity extends AppCompatActivity
         }
     }
 
-
     View.OnClickListener buttonListener = new View.OnClickListener()
     {
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
+            httpClient = new OkHttpClient();
+
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
@@ -77,7 +80,10 @@ public class SignUpActivity extends AppCompatActivity
                 startActivity(LogInIntent);
             }
             // Если нажата кнопка регистрации.
-            else if (v.getId() == R.id.registerButton) {
+            else if (v.getId() == R.id.registerButton)
+            {
+                // 1. Вызов метода SignUpPostRequest - отправка POST-запроса с введёнными
+                // электронной почтой, паролем.
                 HTTPRequests request = new HTTPRequests();
                 JSONObject response = request.SignUpPostRequest(SignUpActivity.this,
                         emailEntry.getText().toString(),
@@ -85,24 +91,25 @@ public class SignUpActivity extends AppCompatActivity
                         IDEntry.getText().toString(),
                         SNILSEntry.getText().toString());
 
-                String singupStatus;
+                String signupStatus;
                 try
                 {
-                    singupStatus = response.getString("status");
+                    signupStatus = response.getString("status");
                 }
                 catch (JSONException e)
                 {
                     throw new RuntimeException(e);
                 }
 
-                switch (singupStatus)
+                // 2. Проверка статуса входа.
+                switch (signupStatus)
                 {
-                    // Если вход успешен, управление передаётся в MainActivity.
-                    // Статус входа, имя, email, роль и пароль сохраняются в SharedPreferences.
                     case ("success"):
                     {
                         try
                         {
+                            // 3. Статус входа, имя, email, роль и пароль сохраняются в
+                            // SharedPreferences.
                             SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                             SharedPreferences.Editor prefEditor = settings.edit();
                             prefEditor.putBoolean("logged_in", true);
@@ -112,6 +119,7 @@ public class SignUpActivity extends AppCompatActivity
                             prefEditor.putString("password", response.getString("password"));
                             prefEditor.apply();
 
+                            // 4. Переход в MainActivity.
                             Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class);
                             startActivity(MainIntent);
                             break;
@@ -121,15 +129,13 @@ public class SignUpActivity extends AppCompatActivity
                             throw new RuntimeException(e);
                         }
                     }
-                    // Если пользователя не найдено в БД, выводится соответствующее сообщение
-                    // об ошибке.
+                    // Если пользователя не найдено в БД.
                     case ("failure"):
                     {
                         errorTextView.setText(R.string.signup_server_error);
                         break;
                     }
-                    // Если отправленный запрос не является POST, выводится сообщение об ошибке
-                    // в API.
+                    // Если отправленный запрос не является POST.
                     case ("failed, an error occurred"):
                     {
                         errorTextView.setText(R.string.api_error_message);

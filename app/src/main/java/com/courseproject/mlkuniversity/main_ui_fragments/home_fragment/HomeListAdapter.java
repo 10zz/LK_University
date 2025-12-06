@@ -13,6 +13,7 @@ import com.courseproject.mlkuniversity.R;
 
 import java.util.List;
 
+
 public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHolder>
 {
     private final LayoutInflater inflater;
@@ -25,7 +26,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         this.inflater = LayoutInflater.from(context);
     }
 
-
     // Возвращает объект ViewHolder, который будет хранить данные по одному объекту HomeListItem.
     @NonNull
     @Override
@@ -36,7 +36,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         return new ViewHolder(view);
     }
 
-
     // Выполняет привязку объекта ViewHolder к объекту HomeListItem по определенной позиции.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position)
@@ -45,7 +44,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
         holder.titleView.setText(homeListItem.getTitle());
         holder.descriptionView.setText(homeListItem.getDescription());
     }
-
 
     // Возвращает количество объектов в списке.
     @Override
@@ -59,7 +57,6 @@ public class HomeListAdapter extends RecyclerView.Adapter<HomeListAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder
     {
         final TextView titleView, descriptionView;
-
 
         ViewHolder(View view)
         {

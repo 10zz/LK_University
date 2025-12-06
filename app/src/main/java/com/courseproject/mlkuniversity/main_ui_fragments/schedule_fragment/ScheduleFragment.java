@@ -17,10 +17,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+
 public class ScheduleFragment extends Fragment
 {
-
     ArrayList<ScheduleListItem> scheduleListItems = new ArrayList<>();
+
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -29,22 +30,21 @@ public class ScheduleFragment extends Fragment
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
     {
-        // Создается объект inflater и RecyclerView этого фрагмента.
+        // 1. Создается объект inflater и RecyclerView этого фрагмента.
         View rootView = inflater.inflate(R.layout.fragment_schedule, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        // Заполняется массив значений списка.
-        setInitialData();
-        // Создаётся объект адаптера с передачей фрагмента и массива значений списка.
+        // 2. Заполняется массив значений списка.
+        requestData();
+        // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
         ScheduleListAdapter adapter = new ScheduleListAdapter(rootView.getContext(), scheduleListItems);
-        // Созданный адаптер задаётся для текущего фрагмента.
+        // 4. Созданный адаптер задаётся для текущего фрагмента.
         recyclerView.setAdapter(adapter);
         
         return rootView;
     }
 
-
     // Тестовые значения.
-    private void setInitialData()
+    private void requestData()
     {
         // TODO: PHP скрипт с запросом данных согласно настройкам.
         for (int i = 0; i < 6; i++) // TODO: i - количество дней в интервале, который запросил пользователь.

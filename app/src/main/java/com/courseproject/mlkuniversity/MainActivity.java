@@ -1,6 +1,7 @@
 package com.courseproject.mlkuniversity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,12 +26,12 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 import org.jetbrains.annotations.NotNull;
 
+
 public class MainActivity extends AppCompatActivity
 {
-    private static int NAM_PAGES, tabTextId;
-    private ViewPager2 viewPager2;
+    private static int tabNum, tabTextId;
     private FragmentStateAdapter pagerAdapter;
-    private ImageButton profileButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -44,49 +45,58 @@ public class MainActivity extends AppCompatActivity
             return insets;
         });
 
-        profileButton = findViewById(R.id.returnButton);
-        profileButton.setOnClickListener(new View.OnClickListener()
+        // 1. Привязка View-переменных.
+        ImageButton profileButton = findViewById(R.id.returnButton);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager2 viewPager2 = findViewById(R.id.pager);
+
+        // 2. Привязка кнопки перехода в профиль к слушателю.
+        profileButton.setOnClickListener(v ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(ProfileIntent);
-            }
+            // Переход в ProfileActivity.
+            Intent ProfileIntent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(ProfileIntent);
         });
 
-        viewPager2 = findViewById(R.id.pager);
-        /*if (arguments != null)
+        // 3. Проверка типа пользователя.
+        final SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+        if (settings.contains("user_type"))
         {
-            if (arguments.getString("role") == "student")
-            {*/
+            // Если пользователь - студент, нижняя панель отрисовывается методом
+            // StudentScreenSlidePageAdapter.
+            if (settings.getString("user_type", "err").equals("student"))
+            {
                 pagerAdapter = new StudentScreenSlidePageAdapter(this);
                 tabTextId = R.array.student_main_tab_ui;
-                NAM_PAGES = 4;
-            /*}
-            else if (arguments.getString("role") == "teacher")
-            {*/
-                /*pagerAdapter = new TeacherScreenSlidePageAdapter(this);
+                tabNum = 4;
+            }
+            // Если пользователь - преподаватель, нижняя панель отрисовывается методом
+            // TeacherScreenSlidePageAdapter.
+            else if (settings.getString("user_type", "err").equals("teacher"))
+            {
+                pagerAdapter = new TeacherScreenSlidePageAdapter(this);
                 tabTextId = R.array.teacher_main_tab_ui;
-                NAM_PAGES = 2;*/
-            //}
+                tabNum = 2;
+            }
             viewPager2.setAdapter(pagerAdapter);
-        /*}
-        else
+        }
+        // Если в SharedPreferences нет данных от типе пользователя - переход в LogInActivity.
+        // TODO
+        /*else
         {
             Intent LoginIntent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(LoginIntent);
         }*/
 
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        // 4. Отрисовка tabLayout.
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2,
                 new TabLayoutMediator.TabConfigurationStrategy()
                 {
-                    String[] tabText = getResources().getStringArray(tabTextId);
+                    final String[] tabText = getResources().getStringArray(tabTextId);
                     @Override
-                    public void onConfigureTab(TabLayout.Tab tab, int position)
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position)
                     {
+                        // Установка иконок для вкладок tabLayout.
                         tab.setText(tabText[position])
                                 .setIcon(R.drawable.ic_launcher_foreground);
                     }
@@ -94,17 +104,21 @@ public class MainActivity extends AppCompatActivity
         tabLayoutMediator.attach();
     }
 
+    // Класс слайдера фрагментов для студентов.
     private static class StudentScreenSlidePageAdapter extends FragmentStateAdapter
     {
-        public StudentScreenSlidePageAdapter(MainActivity mainActivity) {
+        public StudentScreenSlidePageAdapter(MainActivity mainActivity)
+        {
             super(mainActivity);
         }
 
         @NonNull
         @NotNull
         @Override
-        public Fragment createFragment(int position) {
-            switch (position) {
+        public Fragment createFragment(int position)
+        {
+            switch (position)
+            {
                 case 0:
                     return new HomeFragment();
                 case 1:
@@ -119,11 +133,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        public int getItemCount() {
-            return NAM_PAGES;
+        public int getItemCount()
+        {
+            return tabNum;
         }
     }
 
+    // Класс слайдера фрагментов для преподавателей.
     private static class TeacherScreenSlidePageAdapter extends FragmentStateAdapter
     {
         public TeacherScreenSlidePageAdapter(MainActivity mainActivity) {
@@ -146,7 +162,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getItemCount() {
-            return NAM_PAGES;
+            return tabNum;
         }
     }
 }

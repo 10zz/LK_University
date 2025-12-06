@@ -16,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 public class ProfileActivity extends AppCompatActivity
 {
     TextView userNameLabel, userRoleLabel, userEmailLabel;
@@ -36,6 +37,7 @@ public class ProfileActivity extends AppCompatActivity
             return insets;
         });
 
+        // 1. Привязка View-переменных.
         userNameLabel = findViewById(R.id.userNameText);
         userRoleLabel = findViewById(R.id.userRoleText);
         userEmailLabel = findViewById(R.id.userEmailText);
@@ -47,11 +49,13 @@ public class ProfileActivity extends AppCompatActivity
         changePasswordButton = findViewById(R.id.changePasswordButton);
         accountExitButton = findViewById(R.id.accountExitButton);
 
+        // 2. Установка значений из SharedPreference в текстовые поля.
         SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
         userNameLabel.setText(settings.getString("name", "err"));
         userEmailLabel.setText(settings.getString("email", "err"));
         userRoleLabel.setText(settings.getString("user_type", "err"));
 
+        // 3. Привязка кнопок к слушателю.
         returnButton.setOnClickListener(buttonListener);
         changeProfilePictureButton.setOnClickListener(buttonListener);
         changePasswordButton.setOnClickListener(buttonListener);
@@ -63,18 +67,18 @@ public class ProfileActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            // Возврат на MainActivity.
+            // Если нажата кнопка возврата на MainActivity.
             if (v.getId() == R.id.returnButton)
             {
                 Intent MainIntent = new Intent(ProfileActivity.this, MainActivity.class);
                 startActivity(MainIntent);
             }
-            // Смена иконки профиля.
+            // Если нажата кнопка смены иконки профиля.
             else if (v.getId() == R.id.changeProfilePictureButton)
             {
                 // TODO: PHP скрипт смены иконки профиля.
             }
-            // Смена пароля.
+            // Если нажата кнопка смены пароля.
             else if (v.getId() == R.id.changePasswordButton)
             {
                 if (newPasswordEntry.getText() == verifyPasswordEntry.getText())
@@ -84,12 +88,13 @@ public class ProfileActivity extends AppCompatActivity
                 else
                     Toast.makeText(getApplicationContext(), "Введённые пароли не совпадают", Toast.LENGTH_SHORT).show();
             }
-            // Выход из аккаунта
+            // Если нажата кнопка выхода из аккаунта
             else if (v.getId() == R.id.accountExitButton)
             {
-                // Очистка SharedPreferences и переход на LogInActivity.
+                // Очистка SharedPreferences.
                 SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                 settings.edit().clear().apply();
+                // Переход на LogInActivity.
                 Intent LogInIntent = new Intent(ProfileActivity.this, LogInActivity.class);
                 startActivity(LogInIntent);
             }
