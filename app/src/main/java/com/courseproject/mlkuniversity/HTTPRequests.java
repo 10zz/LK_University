@@ -72,8 +72,8 @@ public class HTTPRequests {
     {
         RequestBody requestBody = new FormBody.Builder()
                 .add("email",email)
-                .add("SNILS",SNILS)
-                .add("ID",ID)
+                .add("snils",SNILS)
+                .add("passport",ID)
                 .add("password",password)
                 .build();
         Request request = new Request.Builder()
@@ -93,10 +93,10 @@ public class HTTPRequests {
                         response.code() + " " + response.message());
             }
 
-            JSONArray responseArr = new JSONArray(response.body().string());
+            /*JSONArray responseArr = new JSONArray(response.body().string());
             JSONObject objArray;
-            objArray = responseArr.optJSONObject(0);
-            return objArray;
+            objArray = responseArr.optJSONObject(0);*/
+            return new JSONObject(response.body().string());
         }
         catch (ExecutionException | InterruptedException | IOException | JSONException e)
         {
@@ -184,9 +184,10 @@ public class HTTPRequests {
                         .host(context.getString(R.string.base_url) + context.getString(R.string.schedule_request))
                         .addQueryParameter("group", group)
                         .addQueryParameter("teacher", teacher)
-                        .addQueryParameter("dateStart", dateStart)
-                        .addQueryParameter("dateEnd", dateEnd)
+                        .addQueryParameter("start_date", dateStart)
+                        .addQueryParameter("end_date", dateEnd)
                         .build())
+
                 .build();
         CallbackFuture future = new CallbackFuture();
 

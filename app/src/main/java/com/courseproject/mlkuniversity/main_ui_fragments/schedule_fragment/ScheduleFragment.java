@@ -30,6 +30,8 @@ public class ScheduleFragment extends Fragment
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
     {
+        // TODO: Календарь-диалог кнопок не работает и список не отрисовывается полностью
+
         // 1. Создается объект inflater и RecyclerView этого фрагмента.
         View rootView = inflater.inflate(R.layout.fragment_schedule, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.list);

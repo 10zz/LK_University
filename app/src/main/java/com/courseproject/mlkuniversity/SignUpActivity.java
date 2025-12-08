@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+        // TODO: Нужно полное имя пользователя для регистрации
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
@@ -80,71 +82,64 @@ public class SignUpActivity extends AppCompatActivity
                 startActivity(LogInIntent);
             }
             // Если нажата кнопка регистрации.
-            else if (v.getId() == R.id.registerButton)
-            {
-                // 1. Вызов метода SignUpPostRequest - отправка POST-запроса с введёнными
-                // электронной почтой, паролем.
-                HTTPRequests request = new HTTPRequests();
-                JSONObject response = request.SignUpPostRequest(SignUpActivity.this,
-                        emailEntry.getText().toString(),
-                        passwordEntry.getText().toString(),
-                        IDEntry.getText().toString(),
-                        SNILSEntry.getText().toString());
+            else if (v.getId() == R.id.registerButton) {
+                if (passwordEntry.getText().toString().equals(verifyPasswordEntry.getText().toString())) {
+                    // 1. Вызов метода SignUpPostRequest - отправка POST-запроса с введёнными
+                    // электронной почтой, паролем.
+                    HTTPRequests request = new HTTPRequests();
+                    JSONObject response = request.SignUpPostRequest(SignUpActivity.this,
+                            emailEntry.getText().toString(),
+                            passwordEntry.getText().toString(),
+                            IDEntry.getText().toString(),
+                            SNILSEntry.getText().toString());
 
-                String signupStatus;
-                try
-                {
-                    signupStatus = response.getString("status");
-                }
-                catch (JSONException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                    String signupStatus;
+                    try {
+                        signupStatus = response.getString("status");
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+                    // 2. Проверка статуса входа.
+                    switch (signupStatus) {
+                        case ("success"): {
+                            try {
+                                // 3. Статус входа, имя, email, роль и пароль сохраняются в
+                                // SharedPreferences.
+                                SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                                SharedPreferences.Editor prefEditor = settings.edit();
+                                prefEditor.putBoolean("logged_in", true);
+                                prefEditor.putString("name", response.getString("name"));
+                                prefEditor.putString("email", response.getString("email"));
+                                prefEditor.putString("user_type", response.getString("user_type"));
+                                prefEditor.putString("password", response.getString("password"));
+                                prefEditor.apply();
 
-                // 2. Проверка статуса входа.
-                switch (signupStatus)
-                {
-                    case ("success"):
-                    {
-                        try
-                        {
-                            // 3. Статус входа, имя, email, роль и пароль сохраняются в
-                            // SharedPreferences.
-                            SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
-                            SharedPreferences.Editor prefEditor = settings.edit();
-                            prefEditor.putBoolean("logged_in", true);
-                            prefEditor.putString("name", response.getString("name"));
-                            prefEditor.putString("email", response.getString("email"));
-                            prefEditor.putString("user_type", response.getString("user_type"));
-                            prefEditor.putString("password", response.getString("password"));
-                            prefEditor.apply();
-
-                            // 4. Переход в MainActivity.
-                            Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class);
-                            startActivity(MainIntent);
+                                // 4. Переход в MainActivity.
+                                Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class);
+                                startActivity(MainIntent);
+                                break;
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        // Если пользователя не найдено в БД.
+                        case ("failure"): {
+                            errorTextView.setText(R.string.signup_server_error);
                             break;
                         }
-                        catch (JSONException e)
-                        {
-                            throw new RuntimeException(e);
+                        // Если отправленный запрос не является POST.
+                        case ("failed, an error occurred"): {
+                            errorTextView.setText(R.string.api_error_message);
+                            break;
+                        }
+                        default: {
+                            errorTextView.setText(R.string.login_unknown_error_message);
                         }
                     }
-                    // Если пользователя не найдено в БД.
-                    case ("failure"):
-                    {
-                        errorTextView.setText(R.string.signup_server_error);
-                        break;
-                    }
-                    // Если отправленный запрос не является POST.
-                    case ("failed, an error occurred"):
-                    {
-                        errorTextView.setText(R.string.api_error_message);
-                        break;
-                    }
-                    default:
-                    {
-                        errorTextView.setText(R.string.login_unknown_error_message);
-                    }
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Введённые пароли не совпадают", Toast.LENGTH_SHORT).show();
                 }
             }
             else
