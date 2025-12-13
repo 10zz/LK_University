@@ -109,9 +109,9 @@ public class LogInActivity extends AppCompatActivity
                             SharedPreferences.Editor prefEditor = settings.edit();
                             prefEditor.putBoolean("logged_in", true);
                             prefEditor.putString("name", response.getString("name"));
-                            prefEditor.putString("email", response.getString("email"));
+                            prefEditor.putString("email", emailEntry.getText().toString());
                             prefEditor.putString("user_type", response.getString("user_type"));
-                            prefEditor.putString("password", response.getString("password"));
+                            prefEditor.putString("password", passwordEntry.getText().toString());
                             prefEditor.apply();
 
                             // 4. Переход в MainActivity.

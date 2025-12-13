@@ -76,6 +76,12 @@ public class ProfileActivity extends AppCompatActivity
             // Если нажата кнопка смены иконки профиля.
             else if (v.getId() == R.id.changeProfilePictureButton)
             {
+                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                intent.setType("image/*");
+
+                startActivity(intent);
                 // TODO: PHP скрипт смены иконки профиля.
             }
             // Если нажата кнопка смены пароля.

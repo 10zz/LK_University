@@ -108,10 +108,11 @@ public class SignUpActivity extends AppCompatActivity
                                 SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                                 SharedPreferences.Editor prefEditor = settings.edit();
                                 prefEditor.putBoolean("logged_in", true);
+                                prefEditor.putString("email", emailEntry.getText().toString());
+                                prefEditor.putString("password", passwordEntry.getText().toString());
+                                // TODO: POST-запрос о данных пользователя
                                 prefEditor.putString("name", response.getString("name"));
-                                prefEditor.putString("email", response.getString("email"));
                                 prefEditor.putString("user_type", response.getString("user_type"));
-                                prefEditor.putString("password", response.getString("password"));
                                 prefEditor.apply();
 
                                 // 4. Переход в MainActivity.
@@ -138,9 +139,7 @@ public class SignUpActivity extends AppCompatActivity
                     }
                 }
                 else
-                {
                     Toast.makeText(getApplicationContext(), "Введённые пароли не совпадают", Toast.LENGTH_SHORT).show();
-                }
             }
             else
                 System.out.println("Unknown button");
