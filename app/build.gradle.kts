@@ -29,6 +29,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildToolsVersion = "36.1.0"
 }
 
 dependencies {
@@ -36,6 +37,7 @@ dependencies {
     implementation("com.google.android.material:material:1.13.0")
     implementation("androidx.viewpager2:viewpager2:1.1.0")
     implementation("com.squareup.okhttp3:okhttp:5.3.2")
+    implementation("com.karumi:dexter:6.2.3")
 
     implementation(libs.appcompat)
     implementation(libs.material)
