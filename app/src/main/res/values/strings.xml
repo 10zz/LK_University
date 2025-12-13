@@ -4,10 +4,11 @@
     <string name="base_url">http://10.0.2.2/</string>
     <string name="login_request">login.php</string>
     <string name="signup_request">registr.php</string>
-    <string name="home_request">home.php</string>
-    <string name="study_request">study.php</string>
+    <string name="home_request">notifications.php</string>
+    <string name="study_request">materials.php</string>
     <string name="schedule_request">schedule.php</string>
-    <string name="finance_request">finance.php</string>
+    <string name="finance_request">finances.php</string>
+    <string name="fqw_request">fqw.php</string>
 
     <string name="login_error_message">Данный пользователь не найден в системе</string>
     <string name="api_error_message">Ошибка в API</string>

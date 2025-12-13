@@ -2,11 +2,12 @@ package com.courseproject.mlkuniversity.main_ui_fragments.finance_fragment;
 
 public class FinanceListItem
 {
-    private String operation, operationType, sum, paymentDate;
+    private String operation, operationType, paymentDate;
+    private int sum;
     // TODO: переменная, хранящая изображение для иконки.
 
 
-    public FinanceListItem(String operation, String operationType, String sum, String paymentDate)
+    public FinanceListItem(String operation, String operationType, int sum, String paymentDate)
     {
         this.operation = operation;
         this.operationType = operationType;
@@ -35,12 +36,12 @@ public class FinanceListItem
         this.operationType = operationType;
     }
 
-    public String getSum()
+    public int getSum()
     {
         return sum;
     }
 
-    public void setSum(String sum)
+    public void setSum(int sum)
     {
         this.sum = sum;
     }

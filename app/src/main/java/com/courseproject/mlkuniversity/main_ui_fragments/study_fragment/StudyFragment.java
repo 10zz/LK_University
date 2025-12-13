@@ -48,7 +48,7 @@ public class StudyFragment extends Fragment
 
     private void requestData()
     {
-        HTTPRequests request = new HTTPRequests();
+        /*HTTPRequests request = new HTTPRequests();
         JSONObject[] responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.study_request));
 
         for (JSONObject object : responseJSON)
@@ -61,6 +61,6 @@ public class StudyFragment extends Fragment
             catch (JSONException e)
             {
                 throw new RuntimeException(e);
-            }
+            }*/
     }
 }

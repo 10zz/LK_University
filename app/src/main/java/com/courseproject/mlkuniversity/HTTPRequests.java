@@ -16,6 +16,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -55,7 +58,11 @@ public class HTTPRequests {
                         response.code() + " " + response.message());
             }
 
-            JSONArray responseArr = new JSONArray(response.body().string());
+            // TODO: clean.
+            String s = response.body().string();
+            System.out.println(s);
+            JSONArray responseArr = new JSONArray(s);
+
             JSONObject objArray;
             objArray = responseArr.optJSONObject(0);
             return objArray;
@@ -93,10 +100,11 @@ public class HTTPRequests {
                         response.code() + " " + response.message());
             }
 
-            /*JSONArray responseArr = new JSONArray(response.body().string());
-            JSONObject objArray;
-            objArray = responseArr.optJSONObject(0);*/
-            return new JSONObject(response.body().string());
+            // TODO: clean.
+            String s = response.body().string();
+            System.out.println(s);
+
+            return new JSONObject(s);
         }
         catch (ExecutionException | InterruptedException | IOException | JSONException e)
         {
@@ -106,10 +114,14 @@ public class HTTPRequests {
 
 
     // Отправляет POST запрос с параметром имени пользователя на сервер; возвращает массив JSON объектов.
-    public JSONObject[] financePostRequest(Context context)
+    public JSONObject[] financePostRequest(Context context, String name)
     {
-        RequestBody requestBody = new FormBody.Builder()
+        // TODO
+        /*RequestBody requestBody = new FormBody.Builder()
                 .add("name", context.getSharedPreferences("Account", MODE_PRIVATE).getString("name", "null"))
+                .build();*/
+        RequestBody requestBody = new FormBody.Builder()
+                .add("name", name)
                 .build();
         Request request = new Request.Builder()
                 .url(context.getString(R.string.base_url) + context.getString(R.string.finance_request))
@@ -127,7 +139,11 @@ public class HTTPRequests {
                         response.code() + " " + response.message());
             }
 
-            JSONArray responseArr = new JSONArray(response.body().string());
+            // TODO: clean.
+            String s = response.body().string();
+            System.out.println(s);
+            JSONArray responseArr = new JSONArray(s);
+
             JSONObject[] objArray = new JSONObject[responseArr.length()];
             for (int i = 0; i < responseArr.length(); i++)
             {
@@ -160,7 +176,10 @@ public class HTTPRequests {
                         response.code() + " " + response.message());
             }
 
-            JSONArray responseArr = new JSONArray(response.body().string());
+            // TODO: clean.
+            String s = response.body().string();
+            System.out.println(s);
+            JSONArray responseArr = new JSONArray(s);
             JSONObject[] objArray = new JSONObject[responseArr.length()];
             for (int i = 0; i < responseArr.length(); i++)
             {
@@ -178,16 +197,20 @@ public class HTTPRequests {
     // отправляет GET-запрос на сервер и возвращает массив JSON объектов.
     public JSONObject[] ScheduleGetRequest(Context context, String group, String teacher, String dateStart, String dateEnd)
     {
+
+
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
                         .scheme("http")
-                        .host(context.getString(R.string.base_url) + context.getString(R.string.schedule_request))
+                        // TODO: Это пиздец какой костыль.
+                        .host(context.getString(R.string.base_url).substring(7, context.getString(R.string.base_url).length() - 1))
+                        .addPathSegment("/" + context.getString(R.string.schedule_request))
+                        //
                         .addQueryParameter("group", group)
                         .addQueryParameter("teacher", teacher)
                         .addQueryParameter("start_date", dateStart)
                         .addQueryParameter("end_date", dateEnd)
                         .build())
-
                 .build();
         CallbackFuture future = new CallbackFuture();
 
@@ -201,7 +224,11 @@ public class HTTPRequests {
                         response.code() + " " + response.message());
             }
 
-            JSONArray responseArr = new JSONArray(response.body().string());
+            // TODO: clean.
+            String s = response.body().string();
+            System.out.println(s);
+            JSONArray responseArr = new JSONArray(s);
+
             JSONObject[] objArray = new JSONObject[responseArr.length()];
             for (int i = 0; i < responseArr.length(); i++)
             {
