@@ -27,16 +27,15 @@ try {
         exit;
     }
 
-    $hash = password_hash($password, PASSWORD_DEFAULT);
     $now = date('Y-m-d H:i:s');
-    $user_type = 'student'; // по умолчанию — студент; измените логику при необходимости
+    $user_type = 'student'; // по умолчанию — студент; изменить логику при необходимости
 
     $ins = $pdo->prepare("INSERT INTO Users (email, snils, passport, password, user_type, created_at) VALUES (:email, :snils, :passport, :password, :user_type, :created_at)");
     $ins->execute([
         ':email' => $email,
         ':snils' => $snils,
         ':passport' => $passport,
-        ':password' => $hash,
+        ':password' => $password,
         ':user_type' => $user_type,
         ':created_at' => $now
     ]);
