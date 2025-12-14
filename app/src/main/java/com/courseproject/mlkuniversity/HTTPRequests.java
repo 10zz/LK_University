@@ -60,12 +60,8 @@ public class HTTPRequests {
 
             // TODO: clean.
             String s = response.body().string();
-            System.out.println(s);
-            JSONArray responseArr = new JSONArray(s);
-
-            JSONObject objArray;
-            objArray = responseArr.optJSONObject(0);
-            return objArray;
+            System.out.println("LOGIN\n" + s);
+            return new JSONObject(s);
         }
         catch (ExecutionException | InterruptedException | IOException | JSONException e)
         {
@@ -75,9 +71,10 @@ public class HTTPRequests {
 
 
     // отправляет POST запрос с регистрационными данными на сервер для создания нового пользователя.
-    public JSONObject SignUpPostRequest(Context context, String email, String password, String ID, String SNILS)
+    public JSONObject SignUpPostRequest(Context context, String name, String email, String password, String ID, String SNILS)
     {
         RequestBody requestBody = new FormBody.Builder()
+                .add("name",name)
                 .add("email",email)
                 .add("snils",SNILS)
                 .add("passport",ID)
@@ -159,7 +156,7 @@ public class HTTPRequests {
 
 
     // отправляет GET-запрос на сервер и возвращает массив JSON объектов.
-    public JSONObject[] JSONGetRequest (Context context, String link_ending)
+    public JSONObject JSONGetRequest (Context context, String link_ending)
     {
         Request request = new Request.Builder()
                 .url(context.getString(R.string.base_url) + link_ending)
@@ -179,13 +176,7 @@ public class HTTPRequests {
             // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
-            JSONArray responseArr = new JSONArray(s);
-            JSONObject[] objArray = new JSONObject[responseArr.length()];
-            for (int i = 0; i < responseArr.length(); i++)
-            {
-                objArray[i] = responseArr.optJSONObject(i);
-            }
-            return objArray;
+            return new JSONObject(s);
         }
         catch (ExecutionException | InterruptedException | IOException | JSONException e)
         {
@@ -235,6 +226,40 @@ public class HTTPRequests {
                 objArray[i] = responseArr.optJSONObject(i);
             }
             return objArray;
+        }
+        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public JSONObject changePasswordPostRequest(Context context, String email, String password)
+    {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email",email)
+                .add("password",password)
+                .build();
+        Request request = new Request.Builder()
+                .url(context.getString(R.string.base_url) + context.getString(R.string.password_change_request))
+                .post(requestBody)
+                .build();
+        CallbackFuture future = new CallbackFuture();
+
+        httpClient.newCall(request).enqueue(future);
+        try
+        {
+            Response response = future.get();
+            if (!response.isSuccessful())
+            {
+                throw new IOException("Запрос к серверу не был успешен: " +
+                        response.code() + " " + response.message());
+            }
+
+            // TODO: clean.
+            String s = response.body().string();
+            System.out.println(s);
+            return new JSONObject(s);
         }
         catch (ExecutionException | InterruptedException | IOException | JSONException e)
         {

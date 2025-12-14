@@ -15,6 +15,7 @@ import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,18 +50,22 @@ public class HomeFragment extends Fragment
     private void requestData()
     {
         HTTPRequests request = new HTTPRequests();
-        JSONObject[] responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.home_request));
-
-        for (JSONObject object : responseJSON)
-            try {
+        JSONObject responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.home_request));
+        try
+        {
+            JSONArray responseArr = responseJSON.getJSONArray("data");
+            for (int i = 0; i < responseJSON.getInt("count"); i++)
+            {
+                JSONObject object = responseArr.getJSONObject(i);
                 homeListItems.add(new HomeListItem(object.getString("title"),
                         object.getString("description")
                 ));
             }
-            catch (JSONException e)
-            {
-                throw new RuntimeException(e);
-            }
+        }
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
         // Тестовые значения.
         /*homeListItems.add(new HomeListItem("Бразилия", "Бразилиа"));
         homeListItems.add(new HomeListItem("Аргентина", "Буэнос-Айрес"));

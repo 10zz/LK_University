@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,12 +17,16 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class ProfileActivity extends AppCompatActivity
 {
     TextView userNameLabel, userRoleLabel, userEmailLabel;
     EditText currentPasswordEntry, newPasswordEntry, verifyPasswordEntry;
     ImageButton returnButton;
+    ImageView profilePicture;
     Button changeProfilePictureButton, changePasswordButton, accountExitButton;
 
 
@@ -48,12 +53,18 @@ public class ProfileActivity extends AppCompatActivity
         changeProfilePictureButton = findViewById(R.id.changeProfilePictureButton);
         changePasswordButton = findViewById(R.id.changePasswordButton);
         accountExitButton = findViewById(R.id.accountExitButton);
+        profilePicture = findViewById(R.id.profilePicture);
 
         // 2. Установка значений из SharedPreference в текстовые поля.
         SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
         userNameLabel.setText(settings.getString("name", "err"));
         userEmailLabel.setText(settings.getString("email", "err"));
         userRoleLabel.setText(settings.getString("user_type", "err"));
+
+        HTTPRequests request = new HTTPRequests();
+        String picLink = settings.getString("profile_picture", "err");
+        if (!picLink.equals("err"))
+            profilePicture.setImageBitmap(request.BitmapGetRequest(this, picLink));
 
         // 3. Привязка кнопок к слушателю.
         returnButton.setOnClickListener(buttonListener);
@@ -87,12 +98,62 @@ public class ProfileActivity extends AppCompatActivity
             // Если нажата кнопка смены пароля.
             else if (v.getId() == R.id.changePasswordButton)
             {
-                if (newPasswordEntry.getText() == verifyPasswordEntry.getText())
+                if (newPasswordEntry.getText().toString().equals(verifyPasswordEntry.getText().toString()))
                 {
-                    // TODO: PHP скрипт смены пароля.
+                    HTTPRequests request = new HTTPRequests();
+                    JSONObject responseJSON = request.changePasswordPostRequest(ProfileActivity.this,
+                            userEmailLabel.getText().toString(),
+                            newPasswordEntry.getText().toString());
+
+                    String changeStatus;
+                    try
+                    {
+                        changeStatus = responseJSON.getString("status");
+                    }
+                    catch (JSONException e)
+                    {
+                        throw new RuntimeException(e);
+                    }
+
+                    switch (changeStatus)
+                    {
+                        case("успешно"):
+                        {
+                                SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                                SharedPreferences.Editor prefEditor = settings.edit();
+                                prefEditor.putString("password", newPasswordEntry.getText().toString());
+                                prefEditor.apply();
+                                break;
+                        }
+                        case ("ошибка сервера"):
+                        case ("неуспешно"):
+                        {
+                            try {
+                                Toast.makeText(getApplicationContext(),
+                                        responseJSON.getString("message"),
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                            catch (JSONException e)
+                            {
+                                throw new RuntimeException(e);
+                            }
+                            break;
+                        }
+                        default:
+                        {
+                            Toast.makeText(getApplicationContext(),
+                                            getText(R.string.login_unknown_error_message).toString(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
                 }
                 else
-                    Toast.makeText(getApplicationContext(), "Введённые пароли не совпадают", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Введённые пароли не совпадают",
+                            Toast.LENGTH_SHORT)
+                            .show();
             }
             // Если нажата кнопка выхода из аккаунта
             else if (v.getId() == R.id.accountExitButton)

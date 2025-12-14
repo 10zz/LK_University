@@ -12,14 +12,17 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 
 import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
+import com.courseproject.mlkuniversity.main_ui_fragments.home_fragment.HomeListItem;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,7 +47,6 @@ public class ScheduleFragment extends Fragment
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState)
     {
-        // TODO: Календарь-диалог кнопок не работает и список не отрисовывается полностью
         // 1. Создается объект inflater и RecyclerView этого фрагмента.
         rootView = inflater.inflate(R.layout.fragment_schedule, container,false);
 
@@ -62,8 +64,34 @@ public class ScheduleFragment extends Fragment
         recyclerView.setNestedScrollingEnabled(false);
         // 4. Созданный адаптер задаётся для текущего фрагмента.
         recyclerView.setAdapter(adapter);
-        
+
+        HTTPRequests request = new HTTPRequests();
+        //JSONObject response = request.JSONGetRequest(rootView.getContext(), getString(R.string.group_request));
+        //fillAutoCompleteTextViewAdapterFromJSON(response, "group_name", groupEditText);
+        JSONObject response = request.JSONGetRequest(rootView.getContext(), getString(R.string.teachers_request));
+        fillAutoCompleteTextViewAdapterFromJSON(response, "full_name", teacherEditText);
+
         return rootView;
+    }
+
+    void fillAutoCompleteTextViewAdapterFromJSON(JSONObject responseObject, String field, AutoCompleteTextView textView)
+    {
+        try
+        {
+            ArrayList<String> list = new ArrayList<>();
+            JSONArray responseArr = responseObject.getJSONArray("data");
+
+            for (int i = 0; i < responseObject.getInt("count"); i++)
+            {
+                JSONObject object = responseArr.getJSONObject(i);
+                list.add(object.getString(field));
+            }
+            textView.setAdapter(new ArrayAdapter<String>(rootView.getContext(),  android.R.layout.simple_spinner_dropdown_item, list));
+        }
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener()
@@ -100,14 +128,14 @@ public class ScheduleFragment extends Fragment
         }
     };
 
-    // Тестовые значения.
+
     private void requestData(String startDate, String endDate)
     {
         scheduleListItems.clear();
         scheduleListItems.add(new ScheduleListItem(" ", " ", null));
 
         HTTPRequests request = new HTTPRequests();
-        JSONObject[] response = request.ScheduleGetRequest(this.getContext(), groupEditText.getText().toString(), teacherEditText.getText().toString(), startDate, endDate);
+        JSONObject[] response = request.ScheduleGetRequest(rootView.getContext(), groupEditText.getText().toString(), teacherEditText.getText().toString(), startDate, endDate);
                 for (int i = 0; i < response.length; i++)
                     try {
                         boolean containsFlag = false;

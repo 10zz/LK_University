@@ -9,6 +9,9 @@
     <string name="schedule_request">schedule.php</string>
     <string name="finance_request">finances.php</string>
     <string name="fqw_request">fqw.php</string>
+    <string name="group_request">list_groups.php</string>
+    <string name="teachers_request">list_teachers.php</string>
+    <string name="password_change_request">password_change.php</string>
 
     <string name="login_error_message">Данный пользователь не найден в системе</string>
     <string name="api_error_message">Ошибка в API</string>

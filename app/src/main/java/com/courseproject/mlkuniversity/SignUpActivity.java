@@ -23,7 +23,7 @@ import okhttp3.OkHttpClient;
 
 public class SignUpActivity extends AppCompatActivity
 {
-    EditText emailEntry, SNILSEntry, IDEntry, passwordEntry, verifyPasswordEntry;
+    EditText nameEntry, emailEntry, SNILSEntry, IDEntry, passwordEntry, verifyPasswordEntry;
     Button logInButton, registerButton;
     TextView errorTextView;
     OkHttpClient httpClient;
@@ -43,6 +43,7 @@ public class SignUpActivity extends AppCompatActivity
         });
 
         // 1. Привязка View-переменных.
+        nameEntry = findViewById(R.id.nameEditText);
         emailEntry = findViewById(R.id.emailEditText);
         SNILSEntry = findViewById(R.id.SNILSEditText);
         IDEntry = findViewById(R.id.IDEditText);
@@ -88,6 +89,7 @@ public class SignUpActivity extends AppCompatActivity
                     // электронной почтой, паролем.
                     HTTPRequests request = new HTTPRequests();
                     JSONObject response = request.SignUpPostRequest(SignUpActivity.this,
+                            nameEntry.getText().toString(),
                             emailEntry.getText().toString(),
                             passwordEntry.getText().toString(),
                             IDEntry.getText().toString(),
@@ -101,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity
                     }
                     // 2. Проверка статуса входа.
                     switch (signupStatus) {
-                        case ("success"): {
+                        case ("успешно"): {
                             try {
                                 // 3. Статус входа, имя, email, роль и пароль сохраняются в
                                 // SharedPreferences.
@@ -110,9 +112,9 @@ public class SignUpActivity extends AppCompatActivity
                                 prefEditor.putBoolean("logged_in", true);
                                 prefEditor.putString("email", emailEntry.getText().toString());
                                 prefEditor.putString("password", passwordEntry.getText().toString());
-                                // TODO: POST-запрос о данных пользователя
-                                prefEditor.putString("name", response.getString("name"));
+                                prefEditor.putString("name", nameEntry.getText().toString());
                                 prefEditor.putString("user_type", response.getString("user_type"));
+                                prefEditor.putString("profile_picture", response.getString("user_icon"));
                                 prefEditor.apply();
 
                                 // 4. Переход в MainActivity.

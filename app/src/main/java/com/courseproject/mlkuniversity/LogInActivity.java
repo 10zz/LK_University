@@ -99,7 +99,7 @@ public class LogInActivity extends AppCompatActivity
                 // 2. Проверка статуса входа.
                 switch (loginStatus)
                 {
-                    case("success"):
+                    case("успешно"):
                     {
                         try
                         {
@@ -112,6 +112,7 @@ public class LogInActivity extends AppCompatActivity
                             prefEditor.putString("email", emailEntry.getText().toString());
                             prefEditor.putString("user_type", response.getString("user_type"));
                             prefEditor.putString("password", passwordEntry.getText().toString());
+                            prefEditor.putString("profile_picture", response.getString("user_icon"));
                             prefEditor.apply();
 
                             // 4. Переход в MainActivity.
