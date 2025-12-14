@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 07 2025 г., 15:39
+-- Время создания: Дек 14 2025 г., 19:35
 -- Версия сервера: 8.0.30
 -- Версия PHP: 7.2.34
 
@@ -24,34 +24,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `ExamsRetakes`
---
-
-CREATE TABLE `ExamsRetakes` (
-  `exam_id` int NOT NULL,
-  `group_id` int NOT NULL,
-  `teacher_id` int NOT NULL,
-  `exam_date` date NOT NULL,
-  `exam_time` time NOT NULL,
-  `room` varchar(50) DEFAULT NULL,
-  `exam_type` varchar(50) NOT NULL,
-  `materials_published` tinyint(1) DEFAULT '0',
-  `created_by_dean` tinyint(1) DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `ExternalEvents`
 --
 
 CREATE TABLE `ExternalEvents` (
   `event_id` int NOT NULL,
   `event_title` varchar(255) NOT NULL,
-  `event_description` text,
-  `event_date` date NOT NULL,
-  `organizer` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `event_description` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -62,6 +41,7 @@ CREATE TABLE `ExternalEvents` (
 
 CREATE TABLE `ExternalSchedule` (
   `external_schedule_id` int NOT NULL,
+  `schedule_subject` varchar(255) NOT NULL,
   `schedule_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_time` time NOT NULL,
@@ -121,9 +101,20 @@ CREATE TABLE `Students` (
   `student_id` int NOT NULL,
   `full_name` varchar(100) NOT NULL,
   `group_id` int NOT NULL,
-  `phone` varchar(16) NOT NULL,
-  `user_id` int NOT NULL,
-  `student_ticket` char(6) NOT NULL
+  `user_id` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `Study`
+--
+
+CREATE TABLE `Study` (
+  `study_id` int NOT NULL,
+  `study_name` varchar(255) NOT NULL,
+  `study_description` varchar(255) NOT NULL,
+  `study_icon` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -134,11 +125,11 @@ CREATE TABLE `Students` (
 
 CREATE TABLE `StudyMaterials` (
   `material_id` int NOT NULL,
-  `teacher_id` int NOT NULL,
   `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
   `material_type` varchar(50) NOT NULL,
-  `file_path` varchar(500) NOT NULL,
-  `upload_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+  `icon_path` varchar(500) NOT NULL,
+  `link` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
@@ -165,22 +156,15 @@ CREATE TABLE `Users` (
   `email` varchar(255) NOT NULL,
   `snils` int NOT NULL,
   `passport` int NOT NULL,
-  `password_hash` varchar(255) NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `user_type` varchar(10) NOT NULL,
+  `user_icon` varchar(500) NOT NULL DEFAULT '/profile_pictures/pic.jpg',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Индексы сохранённых таблиц
 --
-
---
--- Индексы таблицы `ExamsRetakes`
---
-ALTER TABLE `ExamsRetakes`
-  ADD PRIMARY KEY (`exam_id`),
-  ADD KEY `fk_exams_groups` (`group_id`),
-  ADD KEY `fk_exams_teachers` (`teacher_id`);
 
 --
 -- Индексы таблицы `ExternalEvents`
@@ -225,11 +209,16 @@ ALTER TABLE `Students`
   ADD KEY `fk_students_groups` (`group_id`);
 
 --
+-- Индексы таблицы `Study`
+--
+ALTER TABLE `Study`
+  ADD PRIMARY KEY (`study_id`);
+
+--
 -- Индексы таблицы `StudyMaterials`
 --
 ALTER TABLE `StudyMaterials`
-  ADD PRIMARY KEY (`material_id`),
-  ADD KEY `fk_materials_teachers` (`teacher_id`);
+  ADD PRIMARY KEY (`material_id`);
 
 --
 -- Индексы таблицы `Teachers`
@@ -248,12 +237,6 @@ ALTER TABLE `Users`
 --
 -- AUTO_INCREMENT для сохранённых таблиц
 --
-
---
--- AUTO_INCREMENT для таблицы `ExamsRetakes`
---
-ALTER TABLE `ExamsRetakes`
-  MODIFY `exam_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT для таблицы `ExternalEvents`
@@ -292,6 +275,12 @@ ALTER TABLE `Students`
   MODIFY `student_id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT для таблицы `Study`
+--
+ALTER TABLE `Study`
+  MODIFY `study_id` int NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `StudyMaterials`
 --
 ALTER TABLE `StudyMaterials`
@@ -314,13 +303,6 @@ ALTER TABLE `Users`
 --
 
 --
--- Ограничения внешнего ключа таблицы `ExamsRetakes`
---
-ALTER TABLE `ExamsRetakes`
-  ADD CONSTRAINT `fk_exams_groups` FOREIGN KEY (`group_id`) REFERENCES `Groups` (`group_id`),
-  ADD CONSTRAINT `fk_exams_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `Teachers` (`teacher_id`);
-
---
 -- Ограничения внешнего ключа таблицы `FQW`
 --
 ALTER TABLE `FQW`
@@ -340,12 +322,6 @@ ALTER TABLE `Payments`
 ALTER TABLE `Students`
   ADD CONSTRAINT `fk_students_groups` FOREIGN KEY (`group_id`) REFERENCES `Groups` (`group_id`),
   ADD CONSTRAINT `fk_students_users` FOREIGN KEY (`user_id`) REFERENCES `Users` (`user_id`);
-
---
--- Ограничения внешнего ключа таблицы `StudyMaterials`
---
-ALTER TABLE `StudyMaterials`
-  ADD CONSTRAINT `fk_materials_teachers` FOREIGN KEY (`teacher_id`) REFERENCES `Teachers` (`teacher_id`);
 
 --
 -- Ограничения внешнего ключа таблицы `Teachers`

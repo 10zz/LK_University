@@ -11,7 +11,7 @@ try {
         exit;
     }
 
-    $stmt = $pdo->query("SELECT group_id, group_name, faculty FROM Groups ORDER BY group_name");
+    $stmt = $pdo->query("SELECT group_id, group_name, faculty FROM `Groups` ORDER BY group_name");
     $groups = $stmt->fetchAll();
 
     echo json_encode([
