@@ -99,7 +99,7 @@ public class LogInActivity extends AppCompatActivity
                 // 2. Проверка статуса входа.
                 switch (loginStatus)
                 {
-                    case("успешно"):
+                    case("success"):
                     {
                         try
                         {
@@ -108,7 +108,7 @@ public class LogInActivity extends AppCompatActivity
                             SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                             SharedPreferences.Editor prefEditor = settings.edit();
                             prefEditor.putBoolean("logged_in", true);
-                            prefEditor.putString("name", response.getString("name"));
+                            prefEditor.putString("name", response.getString("full_name"));
                             prefEditor.putString("email", emailEntry.getText().toString());
                             prefEditor.putString("user_type", response.getString("user_type"));
                             prefEditor.putString("password", passwordEntry.getText().toString());
@@ -126,15 +126,15 @@ public class LogInActivity extends AppCompatActivity
                         }
                     }
                     // Если пользователя не найдено в БД.
-                    case("failure"):
+                    case("error"):
                     {
-                        errorTextView.setText(R.string.login_error_message);
-                        break;
-                    }
-                    // Если отправленный запрос не является POST.
-                    case("failed, an error occurred"):
-                    {
-                        errorTextView.setText(R.string.api_error_message);
+                        try {
+                            errorTextView.setText(response.getString("message"));
+                        }
+                        catch (JSONException e)
+                        {
+                            throw new RuntimeException(e);
+                        }
                         break;
                     }
                     default:

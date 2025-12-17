@@ -15,6 +15,7 @@ import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,28 +40,32 @@ public class StudyFragment extends Fragment
         // 2. Заполняется массив значений списка.
         requestData();
         // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
-        StudyListAdapter adapter = new StudyListAdapter(rootView.getContext(), studyListItems);
         // 4. Созданный адаптер задаётся для текущего фрагмента.
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new StudyListAdapter(rootView.getContext(), studyListItems));
 
         return rootView;
     }
 
     private void requestData()
     {
-        /*HTTPRequests request = new HTTPRequests();
-        JSONObject[] responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.study_request));
+        HTTPRequests request = new HTTPRequests();
+        JSONObject responseJSON = request.JSONGetRequest(this.getContext(), getString(R.string.study_request));
+        try
+        {
+            JSONArray responseArr = responseJSON.getJSONArray("data");
 
-        for (JSONObject object : responseJSON)
-            try {
-                studyListItems.add(new StudyListItem(object.getString("header"),
+            for (int i = 0; i < responseArr.length(); i++)
+            {
+                JSONObject object = responseArr.getJSONObject(i);
+                studyListItems.add(new StudyListItem(object.getString("title"),
                         object.getString("description"),
                         request.BitmapGetRequest(this.getContext(), object.getString("icon_path"))
                 ));
             }
-            catch (JSONException e)
-            {
-                throw new RuntimeException(e);
-            }*/
+        }
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

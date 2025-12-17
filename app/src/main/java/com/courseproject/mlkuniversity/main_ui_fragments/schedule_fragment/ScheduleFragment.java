@@ -66,10 +66,25 @@ public class ScheduleFragment extends Fragment
         recyclerView.setAdapter(adapter);
 
         HTTPRequests request = new HTTPRequests();
-        //JSONObject response = request.JSONGetRequest(rootView.getContext(), getString(R.string.group_request));
-        //fillAutoCompleteTextViewAdapterFromJSON(response, "group_name", groupEditText);
         JSONObject response = request.JSONGetRequest(rootView.getContext(), getString(R.string.teachers_request));
-        fillAutoCompleteTextViewAdapterFromJSON(response, "full_name", teacherEditText);
+        fillAutoCompleteTextViewAdapterFromJSON(response, "teacher_name", teacherEditText);
+        response = request.JSONGetRequest(rootView.getContext(), getString(R.string.group_request));
+        fillAutoCompleteTextViewAdapterFromJSON(response, "group_name", groupEditText);
+
+        teacherEditText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                teacherEditText.showDropDown();
+            }
+        });
+        groupEditText.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                groupEditText.showDropDown();
+            }
+        });
 
         return rootView;
     }
@@ -84,7 +99,7 @@ public class ScheduleFragment extends Fragment
             for (int i = 0; i < responseObject.getInt("count"); i++)
             {
                 JSONObject object = responseArr.getJSONObject(i);
-                list.add(object.getString(field));
+                list.add(object.getString(field).toString());
             }
             textView.setAdapter(new ArrayAdapter<String>(rootView.getContext(),  android.R.layout.simple_spinner_dropdown_item, list));
         }
@@ -132,37 +147,51 @@ public class ScheduleFragment extends Fragment
     private void requestData(String startDate, String endDate)
     {
         scheduleListItems.clear();
-        scheduleListItems.add(new ScheduleListItem(" ", " ", null));
 
         HTTPRequests request = new HTTPRequests();
-        JSONObject[] response = request.ScheduleGetRequest(rootView.getContext(), groupEditText.getText().toString(), teacherEditText.getText().toString(), startDate, endDate);
-                for (int i = 0; i < response.length; i++)
-                    try {
-                        boolean containsFlag = false;
-                        for (ScheduleListItem item : scheduleListItems)
-                            if (item.getDate().equals(response[i].getString("day"))) containsFlag = true;
-                        if (!containsFlag)
-                            scheduleListItems.add(new ScheduleListItem(
-                                    response[i].getString("day"),
-                                    response[i].getString("day"),
-                                    null));
+        JSONObject responseJSON = request.ScheduleGetRequest(rootView.getContext(), groupEditText.getText().toString(), teacherEditText.getText().toString(), startDate, endDate);
 
-                        ArrayList<ScheduleSubListItem> scheduleSubListItems = new ArrayList<>();
+        int responseCount;
+        try {
+            responseCount = responseJSON.getInt("count");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        JSONObject[] response = new JSONObject[responseCount];
+        try {
+            for (int i = 0; i < responseJSON.getJSONArray("data").length(); i++)
+                response[i] = responseJSON.getJSONArray("data").getJSONObject(i);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
 
-                        for (JSONObject object : response)
-                            if (object.getString("day").equals(scheduleListItems.get(i).getDay()))
-                                scheduleSubListItems.add(new ScheduleSubListItem(object.getString("subject"),
-                                        object.getString("teacher"),
-                                        object.getString("group"),
-                                        object.getString("start_time") + " - " + object.getString("end_time"),
-                                        object.getString("room")));
+        for (int i = 0; i < response.length; i++)
+            try {
+                boolean containsFlag = false;
+                for (ScheduleListItem item : scheduleListItems)
+                    if (item.getDate().equals(response[i].getString("date"))) containsFlag = true;
+                if (!containsFlag)
+                    scheduleListItems.add(new ScheduleListItem(
+                            response[i].getString("date"),
+                            response[i].getString("date"),
+                            null));
 
-                        scheduleListItems.get(i).setScheduleSubListItems(scheduleSubListItems);
-                    }
-                    catch (JSONException e)
-                    {
-                        throw new RuntimeException(e);
-                    }
+                ArrayList<ScheduleSubListItem> scheduleSubListItems = new ArrayList<>();
+
+                for (JSONObject object : response)
+                    if (object.getString("date").equals(scheduleListItems.get(i).getDay()))
+                        scheduleSubListItems.add(new ScheduleSubListItem(object.getString("subject"),
+                                object.getString("teacher"),
+                                object.getString("group"),
+                                object.getString("start_time") + " - " + object.getString("end_time"),
+                                object.getString("room")));
+
+                scheduleListItems.get(i).setScheduleSubListItems(scheduleSubListItems);
+            }
+            catch (JSONException e)
+            {
+                throw new RuntimeException(e);
+            }
                 // Тестовые данные.
                     /*for (int i = 0; i < 6; i++)
                     {

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -74,34 +73,33 @@ public class MainActivity extends AppCompatActivity
         });
 
         // 3. Проверка типа пользователя.
-        /*final SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+        final SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
         if (settings.contains("user_type"))
         {
             // Если пользователь - студент, нижняя панель отрисовывается методом
             // StudentScreenSlidePageAdapter.
-            if (settings.getString("user_type", "err").equals("student"))
-            {*/
+            if (settings.getString("user_type", "err").equals("Студент"))
+            {
                 pagerAdapter = new StudentScreenSlidePageAdapter(this);
                 tabTextId = R.array.student_main_tab_ui;
                 tabNum = 4;
-            /*}
+            }
             // Если пользователь - преподаватель, нижняя панель отрисовывается методом
             // TeacherScreenSlidePageAdapter.
-            else if (settings.getString("user_type", "err").equals("teacher"))
-            {*/
-                /*pagerAdapter = new TeacherScreenSlidePageAdapter(this);
+            else if (settings.getString("user_type", "err").equals("Преподаватель"))
+            {
+                pagerAdapter = new TeacherScreenSlidePageAdapter(this);
                 tabTextId = R.array.teacher_main_tab_ui;
                 tabNum = 2;
-            }*/
+            }
             viewPager2.setAdapter(pagerAdapter);
-        /*}*/
+        }
         // Если в SharedPreferences нет данных от типе пользователя - переход в LogInActivity.
-        // TODO
-        /*else
+        else
         {
             Intent LoginIntent = new Intent(MainActivity.this, LogInActivity.class);
             startActivity(LoginIntent);
-        }*/
+        }
 
         // 4. Отрисовка tabLayout.
         TabLayoutMediator tabLayoutMediator = new TabLayoutMediator(tabLayout, viewPager2,

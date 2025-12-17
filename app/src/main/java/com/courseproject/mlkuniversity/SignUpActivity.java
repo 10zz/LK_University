@@ -103,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity
                     }
                     // 2. Проверка статуса входа.
                     switch (signupStatus) {
-                        case ("успешно"): {
+                        case ("success"): {
                             try {
                                 // 3. Статус входа, имя, email, роль и пароль сохраняются в
                                 // SharedPreferences.
@@ -126,13 +126,14 @@ public class SignUpActivity extends AppCompatActivity
                             }
                         }
                         // Если пользователя не найдено в БД.
-                        case ("failure"): {
-                            errorTextView.setText(R.string.signup_server_error);
-                            break;
-                        }
-                        // Если отправленный запрос не является POST.
-                        case ("failed, an error occurred"): {
-                            errorTextView.setText(R.string.api_error_message);
+                        case ("error"): {
+                            try {
+                                errorTextView.setText(response.getString("message"));
+                            }
+                            catch (JSONException e)
+                            {
+                                throw new RuntimeException(e);
+                            }
                             break;
                         }
                         default: {

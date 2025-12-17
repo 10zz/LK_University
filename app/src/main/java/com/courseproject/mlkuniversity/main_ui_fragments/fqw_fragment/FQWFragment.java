@@ -1,5 +1,8 @@
 package com.courseproject.mlkuniversity.main_ui_fragments.fqw_fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,9 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -46,11 +53,31 @@ public class FQWFragment extends Fragment
     private void setInitialData()
     {
         // TODO: PHP скрипт с запросом данных.
+        HTTPRequests request = new HTTPRequests();
+        JSONObject response = request.fqwPostRequest(this.getContext());
+
+        try
+        {
+            JSONArray responseArr = response.getJSONArray("data");
+            for (int i = 0; i < responseArr.length(); i++)
+            {
+                JSONObject object = responseArr.getJSONObject(i);
+                fqwListItems.add(new FQWListItem(object.getString("student"),
+                        object.getString("group"),
+                        object.getString("department"),
+                        object.getString("theme")));
+            }
+        }
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
+
         // Тестовые значения.
-        fqwListItems.add(new FQWListItem("Великобритания", "Лондон", "DRP", "BIG theme"));
+        /*fqwListItems.add(new FQWListItem("Великобритания", "Лондон", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Мексика", "Мехико", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Норвегия", "Осло", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Китай", "Пекин", "DRP", "BIG theme"));
-        fqwListItems.add(new FQWListItem("Япония", "Токио", "DRP", "BIG theme"));
+        fqwListItems.add(new FQWListItem("Япония", "Токио", "DRP", "BIG theme"));*/
     }
 }

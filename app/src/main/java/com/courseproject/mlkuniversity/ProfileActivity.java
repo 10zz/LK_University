@@ -117,16 +117,24 @@ public class ProfileActivity extends AppCompatActivity
 
                     switch (changeStatus)
                     {
-                        case("успешно"):
+                        case("success"):
                         {
-                                SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
-                                SharedPreferences.Editor prefEditor = settings.edit();
-                                prefEditor.putString("password", newPasswordEntry.getText().toString());
-                                prefEditor.apply();
-                                break;
+                            SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                            SharedPreferences.Editor prefEditor = settings.edit();
+                            prefEditor.putString("password", newPasswordEntry.getText().toString());
+                            prefEditor.apply();
+
+                            try {
+                                Toast.makeText(getApplicationContext(),
+                                                responseJSON.getString("message"),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                            } catch (JSONException e) {
+                                throw new RuntimeException(e);
+                            }
+                            break;
                         }
-                        case ("ошибка сервера"):
-                        case ("неуспешно"):
+                        case ("error"):
                         {
                             try {
                                 Toast.makeText(getApplicationContext(),

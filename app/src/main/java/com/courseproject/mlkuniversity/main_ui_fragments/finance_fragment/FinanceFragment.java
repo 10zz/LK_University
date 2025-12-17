@@ -1,5 +1,8 @@
 package com.courseproject.mlkuniversity.main_ui_fragments.finance_fragment;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,8 +16,10 @@ import android.view.ViewGroup;
 
 import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
+import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyListItem;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,26 +53,26 @@ public class FinanceFragment extends Fragment
 
     private void requestData()
     {
-
         HTTPRequests request = new HTTPRequests();
-        // TODO: Убрать второй аргумент.
-        JSONObject[] response = request.financePostRequest(this.getContext(), "name2");
-        for (JSONObject object : response)
-            try
-            {
-                    financeListItems.add(new FinanceListItem(
-                            object.getInt("amount") > 0 ? "Поступление" : "Списание",
-                            object.getString("operation_type"),
-                            object.getInt("amount"),
-                            object.getString("time")
-                    ));
-            }
-            catch (JSONException e)
-            {
-                throw new RuntimeException(e);
-            }
+        SharedPreferences settings = getActivity().getSharedPreferences("Account", MODE_PRIVATE);
+        JSONObject response = request.financePostRequest(this.getContext(), settings.getString("name", "err"));
 
-        //System.out.println(response.toString());
+        try
+        {
+            JSONArray responseArr = response.getJSONArray("data");
+            for (int i = 0; i < responseArr.length(); i++)
+            {
+                JSONObject object = responseArr.getJSONObject(i);
+                financeListItems.add(new FinanceListItem(object.getString("operation"),
+                        object.getString("operation_type"),
+                        object.getInt("amount"),
+                        object.getString("time")));
+            }
+        }
+        catch (JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
 
         // Тестовые значения.
         /*financeListItems.add(new FinanceListItem("Бразилия", "Бразилиа", "23", "23.12.2333"));
