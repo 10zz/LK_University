@@ -14,7 +14,7 @@ try {
 } catch (PDOException $e) {
     header('Content-Type: application/json; charset=utf-8', true, 500);
     echo json_encode([
-        'status' => 'ошибка сервера',
+        'status' => 'error',
         'message' => 'Не удалось подключиться к БД',
         'error' => $e->getMessage()
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

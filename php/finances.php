@@ -4,7 +4,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        echo json_encode(['status' => 'неуспешно', 'message' => 'Требуется POST'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode(['status' => 'error', 'message' => 'Требуется POST'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -12,49 +12,55 @@ try {
     $name = trim($input['name'] ?? '');
 
     if ($name === '') {
-        echo json_encode(['status' => 'неуспешно', 'message' => 'Поле name обязательно'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode(['status' => 'error', 'message' => 'Поле ФИО обязательно'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
-    // Найдём студента(ов) по имени (LIKE)
-    $stmt = $pdo->prepare("SELECT student_id, full_name FROM Students WHERE full_name LIKE :name");
-    $stmt->execute([':name' => "%$name%"]);
-    $students = $stmt->fetchAll();
-
-    if (count($students) === 0) {
-        echo json_encode(['status' => 'неуспешно', 'message' => 'Студент не найден'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    $studentIds = array_column($students, 'student_id');
-
-    // Получим платежи для найденных студентов
-    $in = implode(',', array_fill(0, count($studentIds), '?'));
-    $sql = "SELECT p.payment_id, p.student_id, p.amount, p.payment_date, p.payment_type
-            FROM Payments p
-            WHERE p.student_id IN ($in)
+    $sql = "SELECT 
+                p.payment_id, 
+                p.amount, 
+                p.payment_date, 
+                p.payment_type,
+                u.full_name AS student_name
+            FROM `Payments` p
+            INNER JOIN `Students` s ON p.student_id = s.student_id
+            INNER JOIN `Users` u ON s.user_id = u.user_id
+            WHERE u.full_name LIKE :name
             ORDER BY p.payment_date DESC
-            LIMIT 500";
-    $stmt2 = $pdo->prepare($sql);
-    $stmt2->execute($studentIds);
-    $payments = $stmt2->fetchAll();
+            LIMIT 100";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':name' => "%$name%"]);
+    $payments = $stmt->fetchAll();
+
+    if (empty($payments)) {
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Платежи для студента не найдены'
+        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        exit;
+    }
 
     $out = [];
     foreach ($payments as $p) {
-        $sname = '';
-        foreach ($students as $s) {
-            if ($s['student_id'] == $p['student_id']) { $sname = $s['full_name']; break; }
-        }
         $out[] = [
-            'student' => $sname,
+            'student' => $p['student_name'],
+            'operation' => 'Начисление',
             'operation_type' => $p['payment_type'],
             'amount' => (float)$p['amount'],
             'time' => $p['payment_date']
         ];
     }
 
-    echo json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    echo json_encode([
+        'status' => 'success',
+        'count' => count($out),
+        'data' => $out
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
-    echo json_encode(['status' => 'ошибка сервера', 'message' => $e->getMessage()], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    echo json_encode([
+        'status' => 'error', 
+        'message' => $e->getMessage()
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }

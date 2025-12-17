@@ -8,10 +8,8 @@ try {
         exit;
     }
 
-    $sql = "SELECT m.material_id, m.title, m.material_type, m.file_path, m.upload_date, t.full_name AS teacher_name
+    $sql = "SELECT m.material_id, m.title, m.description, m.material_type, m.icon_path, m.link
             FROM StudyMaterials m
-            LEFT JOIN Teachers t ON m.teacher_id = t.teacher_id
-            ORDER BY m.upload_date DESC
             LIMIT 200";
     $stmt = $pdo->query($sql);
     $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -19,16 +17,15 @@ try {
     $out = [];
     foreach ($rows as $r) {
         $out[] = [
+            'icon_path' => $r['icon_path'],
             'title' => $r['title'],
-            'description' => $r['material_type'],
-            'file_path' => $r['file_path'],
-            'teacher' => $r['teacher_name'] ?? '',
-            'upload_date' => $r['upload_date']
+            'material_type' => $r['material_type'],
+            'description' => $r['description']
         ];
     }
 
-    echo json_encode($out, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    echo json_encode(['status' => 'success', 'data' => $out], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
-    echo json_encode(['status' => 'ошибка сервера', 'message' => $e->getMessage()], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage()], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }

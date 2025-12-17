@@ -4,8 +4,8 @@ header('Content-Type: application/json; charset=utf-8');
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        echo json_encode([
-            'status' => 'неуспешно', 
+        echo json_encode([ 
+            'status' => 'error',
             'message' => 'Требуется POST запрос'
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
@@ -18,20 +18,20 @@ try {
     // Валидация входных данных
     if (empty($email) || empty($new_password)) {
         echo json_encode([
-            'status' => 'неуспешно',
+            'status' => 'error',
             'message' => 'Email и новый пароль обязательны'
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
     // Проверяем существование пользователя
-    $stmt = $pdo->prepare("SELECT user_id FROM `Users` WHERE email = :email LIMIT 1");
+    $stmt = $pdo->prepare("SELECT `user_id` FROM `Users` WHERE `email` = :email LIMIT 1");
     $stmt->execute([':email' => $email]);
     $user = $stmt->fetch();
 
     if (!$user) {
         echo json_encode([
-            'status' => 'неуспешно',
+            'status' => 'error',
             'message' => 'Пользователь с таким email не найден'
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
@@ -51,19 +51,19 @@ try {
 
     if ($rows_affected > 0) {
         echo json_encode([
-            'status' => 'успешно',
+            'status' => 'success',
             'message' => 'Пароль успешно изменен'
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     } else {
         echo json_encode([
-            'status' => 'неуспешно',
+            'status' => 'error',
             'message' => 'Не удалось изменить пароль'
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'ошибка сервера', 
+        'status' => 'error', 
         'message' => $e->getMessage()
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }

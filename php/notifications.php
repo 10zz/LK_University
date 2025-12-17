@@ -4,7 +4,7 @@ header('Content-Type: application/json; charset=utf-8');
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-        echo json_encode(['status' => 'неуспешно', 'message' => 'Требуется GET'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        echo json_encode(['status' => 'error', 'message' => 'Требуется GET'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
@@ -26,14 +26,14 @@ try {
     }
 
     echo json_encode([
-        'status' => 'успешно',
+        'status' => 'success',
         'count' => count($out),
         'data' => $out
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'ошибка сервера', 
+        'status' => 'error', 
         'message' => $e->getMessage()
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }

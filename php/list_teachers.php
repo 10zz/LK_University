@@ -5,24 +5,28 @@ header('Content-Type: application/json; charset=utf-8');
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         echo json_encode([
-            'status' => 'неуспешно', 
+            'status' => 'error', 
             'message' => 'Требуется GET запрос'
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         exit;
     }
 
-    $stmt = $pdo->query("SELECT teacher_id, full_name, department, user_id FROM Teachers ORDER BY full_name");
+    $stmt = $pdo->query("SELECT 
+                    u.full_name AS teacher_name, t.department 
+                FROM Teachers t 
+                LEFT JOIN `Users` u ON t.user_id = u.user_id
+                ORDER BY teacher_name");
     $teachers = $stmt->fetchAll();
 
     echo json_encode([
-        'status' => 'успешно',
+        'status' => 'success',
         'count' => count($teachers),
         'data' => $teachers
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
     echo json_encode([
-        'status' => 'ошибка сервера', 
+        'status' => 'error', 
         'message' => $e->getMessage()
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }
