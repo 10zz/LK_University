@@ -53,7 +53,6 @@ public class StudyFragment extends Fragment
         try
         {
             JSONArray responseArr = responseJSON.getJSONArray("data");
-
             for (int i = 0; i < responseArr.length(); i++)
             {
                 JSONObject object = responseArr.getJSONObject(i);
