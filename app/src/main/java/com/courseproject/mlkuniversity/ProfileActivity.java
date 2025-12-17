@@ -23,11 +23,8 @@ import org.json.JSONObject;
 
 public class ProfileActivity extends AppCompatActivity
 {
-    TextView userNameLabel, userRoleLabel, userEmailLabel;
+    TextView userEmailLabel;
     EditText currentPasswordEntry, newPasswordEntry, verifyPasswordEntry;
-    ImageButton returnButton;
-    ImageView profilePicture;
-    Button changeProfilePictureButton, changePasswordButton, accountExitButton;
 
 
     @Override
@@ -43,17 +40,17 @@ public class ProfileActivity extends AppCompatActivity
         });
 
         // 1. Привязка View-переменных.
-        userNameLabel = findViewById(R.id.userNameText);
-        userRoleLabel = findViewById(R.id.userRoleText);
+        TextView userNameLabel = findViewById(R.id.userNameText);
+        TextView userRoleLabel = findViewById(R.id.userRoleText);
         userEmailLabel = findViewById(R.id.userEmailText);
         currentPasswordEntry = findViewById(R.id.currentPasswordEditText);
         newPasswordEntry = findViewById(R.id.newPasswordEditText);
         verifyPasswordEntry = findViewById(R.id.verifyPasswordEditText);
-        returnButton = findViewById(R.id.returnButton);
-        changeProfilePictureButton = findViewById(R.id.changeProfilePictureButton);
-        changePasswordButton = findViewById(R.id.changePasswordButton);
-        accountExitButton = findViewById(R.id.accountExitButton);
-        profilePicture = findViewById(R.id.profilePicture);
+        ImageButton returnButton = findViewById(R.id.returnButton);
+        Button changeProfilePictureButton = findViewById(R.id.changeProfilePictureButton);
+        Button changePasswordButton = findViewById(R.id.changePasswordButton);
+        Button accountExitButton = findViewById(R.id.accountExitButton);
+        ImageView profilePicture = findViewById(R.id.profilePicture);
 
         // 2. Установка значений из SharedPreference в текстовые поля.
         SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
@@ -61,12 +58,13 @@ public class ProfileActivity extends AppCompatActivity
         userEmailLabel.setText(settings.getString("email", "err"));
         userRoleLabel.setText(settings.getString("user_type", "err"));
 
+        // 3. HTTP-запрос для скачивания икони профиля и установка её в profilePicture.
         HTTPRequests request = new HTTPRequests();
         String picLink = settings.getString("profile_picture", "err");
         if (!picLink.equals("err"))
             profilePicture.setImageBitmap(request.BitmapGetRequest(this, picLink));
 
-        // 3. Привязка кнопок к слушателю.
+        // 4. Привязка кнопок к слушателю.
         returnButton.setOnClickListener(buttonListener);
         changeProfilePictureButton.setOnClickListener(buttonListener);
         changePasswordButton.setOnClickListener(buttonListener);
@@ -98,66 +96,61 @@ public class ProfileActivity extends AppCompatActivity
             // Если нажата кнопка смены пароля.
             else if (v.getId() == R.id.changePasswordButton)
             {
+                // Если введённые пароли совпадают.
                 if (newPasswordEntry.getText().toString().equals(verifyPasswordEntry.getText().toString()))
                 {
+                    // 1. Отправка запроса на смену пароля.
                     HTTPRequests request = new HTTPRequests();
                     JSONObject responseJSON = request.changePasswordPostRequest(ProfileActivity.this,
                             userEmailLabel.getText().toString(),
                             newPasswordEntry.getText().toString());
-
-                    String changeStatus;
                     try
                     {
-                        changeStatus = responseJSON.getString("status");
+                        // 2. Проверка ответа сервера.
+                        String changeStatus = responseJSON.getString("status");
+                        switch (changeStatus)
+                        {
+                            // Если смена пароля успешна.
+                            case ("success"):
+                            {
+                                // 3. Перезапись нового пароля в SharedPreferences.
+                                SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
+                                SharedPreferences.Editor prefEditor = settings.edit();
+                                prefEditor.putString("password", newPasswordEntry.getText().toString());
+                                prefEditor.apply();
+                                // 4. Вывод всплывающего окна о смене пароля.
+                                Toast.makeText(getApplicationContext(),
+                                                responseJSON.getString("message"),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                                break;
+                            }
+                            // Если смена пароля не успешна, вывод сообщения об ошибке.
+                            case ("error"):
+                            {
+                                Toast.makeText(getApplicationContext(),
+                                                responseJSON.getString("message"),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                                break;
+                            }
+                            // Иначе, вывод сообщения о неизвестной ошибке.
+                            default:
+                            {
+                                Toast.makeText(getApplicationContext(),
+                                                getText(R.string.login_unknown_error_message).toString(),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
                     }
                     catch (JSONException e)
                     {
                         throw new RuntimeException(e);
                     }
-
-                    switch (changeStatus)
-                    {
-                        case("success"):
-                        {
-                            SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
-                            SharedPreferences.Editor prefEditor = settings.edit();
-                            prefEditor.putString("password", newPasswordEntry.getText().toString());
-                            prefEditor.apply();
-
-                            try {
-                                Toast.makeText(getApplicationContext(),
-                                                responseJSON.getString("message"),
-                                                Toast.LENGTH_SHORT)
-                                        .show();
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-                            break;
-                        }
-                        case ("error"):
-                        {
-                            try {
-                                Toast.makeText(getApplicationContext(),
-                                        responseJSON.getString("message"),
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-                            }
-                            catch (JSONException e)
-                            {
-                                throw new RuntimeException(e);
-                            }
-                            break;
-                        }
-                        default:
-                        {
-                            Toast.makeText(getApplicationContext(),
-                                            getText(R.string.login_unknown_error_message).toString(),
-                                            Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                    }
                 }
                 else
+                    // Иначе, вывод сообщения о несовпадении паролей.
                     Toast.makeText(getApplicationContext(),
                             "Введённые пароли не совпадают",
                             Toast.LENGTH_SHORT)

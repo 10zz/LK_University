@@ -40,9 +40,8 @@ public class HomeFragment extends Fragment
         // 2. Заполняется массив значений списка.
         requestData();
         // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
-        HomeListAdapter adapter = new HomeListAdapter(rootView.getContext(), homeListItems);
         // 4. Созданный адаптер задаётся для текущего фрагмента.
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new HomeListAdapter(rootView.getContext(), homeListItems));
 
         return rootView;
     }

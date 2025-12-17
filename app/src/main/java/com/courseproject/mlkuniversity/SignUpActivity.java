@@ -18,15 +18,11 @@ import androidx.core.view.WindowInsetsCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import okhttp3.OkHttpClient;
-
 
 public class SignUpActivity extends AppCompatActivity
 {
     EditText nameEntry, emailEntry, SNILSEntry, IDEntry, passwordEntry, verifyPasswordEntry;
-    Button logInButton, registerButton;
     TextView errorTextView;
-    OkHttpClient httpClient;
 
 
     @Override
@@ -49,8 +45,8 @@ public class SignUpActivity extends AppCompatActivity
         IDEntry = findViewById(R.id.IDEditText);
         passwordEntry = findViewById(R.id.passwordEditText);
         verifyPasswordEntry = findViewById(R.id.verifyPasswordEditText);
-        logInButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
+        Button logInButton = findViewById(R.id.loginButton);
+        Button registerButton = findViewById(R.id.registerButton);
         errorTextView = findViewById(R.id.errorTextView);
 
         // 2. Привязка кнопок к слушателю.
@@ -71,20 +67,21 @@ public class SignUpActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            httpClient = new OkHttpClient();
-
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
-                // Переход в LogInActivity с текстом из полей email и password.
+                // Переход в LogInActivity с передачей текста из полей email и password.
                 Intent LogInIntent = new Intent(SignUpActivity.this, LogInActivity.class)
                         .putExtra("email", emailEntry.getText().toString())
                         .putExtra("password", passwordEntry.getText().toString());
                 startActivity(LogInIntent);
             }
             // Если нажата кнопка регистрации.
-            else if (v.getId() == R.id.registerButton) {
-                if (passwordEntry.getText().toString().equals(verifyPasswordEntry.getText().toString())) {
+            else if (v.getId() == R.id.registerButton)
+            {
+                // Если введённые пароли совпадают.
+                if (passwordEntry.getText().toString().equals(verifyPasswordEntry.getText().toString()))
+                {
                     // 1. Вызов метода SignUpPostRequest - отправка POST-запроса с введёнными
                     // электронной почтой, паролем.
                     HTTPRequests request = new HTTPRequests();
@@ -94,17 +91,14 @@ public class SignUpActivity extends AppCompatActivity
                             passwordEntry.getText().toString(),
                             IDEntry.getText().toString(),
                             SNILSEntry.getText().toString());
-
-                    String signupStatus;
-                    try {
-                        signupStatus = response.getString("status");
-                    } catch (JSONException e) {
-                        throw new RuntimeException(e);
-                    }
-                    // 2. Проверка статуса входа.
-                    switch (signupStatus) {
-                        case ("success"): {
-                            try {
+                    try
+                    {
+                        String signupStatus = response.getString("status");
+                        // 2. Проверка статуса входа.
+                        switch (signupStatus)
+                        {
+                            case ("success"):
+                            {
                                 // 3. Статус входа, имя, email, роль и пароль сохраняются в
                                 // SharedPreferences.
                                 SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
@@ -121,28 +115,29 @@ public class SignUpActivity extends AppCompatActivity
                                 Intent MainIntent = new Intent(SignUpActivity.this, MainActivity.class);
                                 startActivity(MainIntent);
                                 break;
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
                             }
-                        }
-                        // Если пользователя не найдено в БД.
-                        case ("error"): {
-                            try {
-                                errorTextView.setText(response.getString("message"));
-                            }
-                            catch (JSONException e)
+                            // Если пользователя не найдено в БД.
+                            case ("error"):
                             {
-                                throw new RuntimeException(e);
+                                errorTextView.setText(response.getString("message"));
+                                break;
                             }
-                            break;
+                            default:
+                            {
+                                errorTextView.setText(R.string.login_unknown_error_message);
+                            }
                         }
-                        default: {
-                            errorTextView.setText(R.string.login_unknown_error_message);
-                        }
+                    }
+                    catch (JSONException e)
+                    {
+                        throw new RuntimeException(e);
                     }
                 }
                 else
-                    Toast.makeText(getApplicationContext(), "Введённые пароли не совпадают", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),
+                            "Введённые пароли не совпадают",
+                            Toast.LENGTH_SHORT)
+                            .show();
             }
             else
                 System.out.println("Unknown button");

@@ -17,15 +17,11 @@ import androidx.core.view.WindowInsetsCompat;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import okhttp3.OkHttpClient;
-
 
 public class LogInActivity extends AppCompatActivity
 {
     EditText emailEntry, passwordEntry;
-    Button logInButton, registerButton, passwordRecoveryButton;
     TextView errorTextView;
-    OkHttpClient httpClient;
 
 
     @Override
@@ -47,13 +43,12 @@ public class LogInActivity extends AppCompatActivity
             Intent MainIntent = new Intent(LogInActivity.this, MainActivity.class);
             startActivity(MainIntent);
         }
-
         // 2. Привязка View-переменных.
         emailEntry = findViewById(R.id.emailEditText);
         passwordEntry = findViewById(R.id.passwordEditText);
-        logInButton = findViewById(R.id.loginButton);
-        registerButton = findViewById(R.id.registerButton);
-        passwordRecoveryButton = findViewById(R.id.passwordRecoveryButton);
+        Button logInButton = findViewById(R.id.loginButton);
+        Button registerButton = findViewById(R.id.registerButton);
+        Button passwordRecoveryButton = findViewById(R.id.passwordRecoveryButton);
         errorTextView = findViewById(R.id.errorTextView);
 
         // 3. Привязка кнопок к слушателю.
@@ -75,8 +70,6 @@ public class LogInActivity extends AppCompatActivity
         @Override
         public void onClick(View v)
         {
-            httpClient = new OkHttpClient();
-
             // Если нажата кнопка входа.
             if (v.getId() == R.id.loginButton)
             {
@@ -84,24 +77,15 @@ public class LogInActivity extends AppCompatActivity
                 // электронной почтой и паролем.
                 HTTPRequests request = new HTTPRequests();
                 JSONObject response = request.logInPostRequest(LogInActivity.this,
-                        emailEntry.getText().toString(), passwordEntry.getText().toString());
-
-                String loginStatus;
+                        emailEntry.getText().toString(),
+                        passwordEntry.getText().toString());
                 try
                 {
-                    loginStatus = response.getString("status");
-                }
-                catch (JSONException e)
-                {
-                    throw new RuntimeException(e);
-                }
-
-                // 2. Проверка статуса входа.
-                switch (loginStatus)
-                {
-                    case("success"):
+                    String loginStatus = response.getString("status");
+                    // 2. Проверка статуса входа.
+                    switch (loginStatus)
                     {
-                        try
+                        case ("success"):
                         {
                             // 3. Статус входа, имя, email, роль и пароль сохраняются в
                             // SharedPreferences.
@@ -120,27 +104,21 @@ public class LogInActivity extends AppCompatActivity
                             startActivity(MainIntent);
                             break;
                         }
-                        catch (JSONException e)
+                        // Если пользователя не найдено в БД.
+                        case ("error"):
                         {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    // Если пользователя не найдено в БД.
-                    case("error"):
-                    {
-                        try {
                             errorTextView.setText(response.getString("message"));
+                            break;
                         }
-                        catch (JSONException e)
+                        default:
                         {
-                            throw new RuntimeException(e);
+                            errorTextView.setText(R.string.login_unknown_error_message);
                         }
-                        break;
                     }
-                    default:
-                    {
-                        errorTextView.setText(R.string.login_unknown_error_message);
-                    }
+                }
+                catch (JSONException e)
+                {
+                    throw new RuntimeException(e);
                 }
             }
             // Если нажата кнопка регистрации.

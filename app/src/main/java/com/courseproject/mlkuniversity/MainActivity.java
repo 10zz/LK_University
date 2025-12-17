@@ -36,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 public class MainActivity extends AppCompatActivity
 {
     private static int tabNum, tabTextId;
-    private FragmentStateAdapter pagerAdapter;
 
 
     @Override
@@ -51,6 +50,7 @@ public class MainActivity extends AppCompatActivity
             return insets;
         });
 
+        // TODO
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
@@ -72,10 +72,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(ProfileIntent);
         });
 
-        // 3. Проверка типа пользователя.
+        // 3. Проверка типа пользователя и настройка полей для слайдера фрагментов и нижней панели.
         final SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
         if (settings.contains("user_type"))
         {
+            FragmentStateAdapter pagerAdapter = null;
             // Если пользователь - студент, нижняя панель отрисовывается методом
             // StudentScreenSlidePageAdapter.
             if (settings.getString("user_type", "err").equals("Студент"))

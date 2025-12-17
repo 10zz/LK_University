@@ -44,9 +44,8 @@ public class FinanceFragment extends Fragment
         // 2. Заполняется массив значений списка.
         requestData();
         // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
-        FinanceListAdapter adapter = new FinanceListAdapter(rootView.getContext(), financeListItems);
         // 4. Созданный адаптер задаётся для текущего фрагмента.
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new FinanceListAdapter(rootView.getContext(), financeListItems));
 
         return rootView;
     }
@@ -54,9 +53,7 @@ public class FinanceFragment extends Fragment
     private void requestData()
     {
         HTTPRequests request = new HTTPRequests();
-        SharedPreferences settings = getActivity().getSharedPreferences("Account", MODE_PRIVATE);
-        JSONObject response = request.financePostRequest(this.getContext(), settings.getString("name", "err"));
-
+        JSONObject response = request.financePostRequest(this.getContext());
         try
         {
             JSONArray responseArr = response.getJSONArray("data");
@@ -73,7 +70,6 @@ public class FinanceFragment extends Fragment
         {
             throw new RuntimeException(e);
         }
-
         // Тестовые значения.
         /*financeListItems.add(new FinanceListItem("Бразилия", "Бразилиа", "23", "23.12.2333"));
         financeListItems.add(new FinanceListItem("Аргентина", "Буэнос-Айрес", "23", "23.12.2333"));

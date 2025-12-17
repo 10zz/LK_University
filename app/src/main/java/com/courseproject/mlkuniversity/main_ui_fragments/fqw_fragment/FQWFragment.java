@@ -1,8 +1,5 @@
 package com.courseproject.mlkuniversity.main_ui_fragments.fqw_fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,19 +40,16 @@ public class FQWFragment extends Fragment
         // 2. Заполняется массив значений списка.
         setInitialData();
         // 3. Создаётся объект адаптера с передачей фрагмента и массива значений списка.
-        FQWListAdapter adapter = new FQWListAdapter(rootView.getContext(), fqwListItems);
         // 4. Созданный адаптер задаётся для текущего фрагмента.
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(new FQWListAdapter(rootView.getContext(), fqwListItems));
 
         return rootView;
     }
 
     private void setInitialData()
     {
-        // TODO: PHP скрипт с запросом данных.
         HTTPRequests request = new HTTPRequests();
         JSONObject response = request.fqwPostRequest(this.getContext());
-
         try
         {
             JSONArray responseArr = response.getJSONArray("data");
@@ -72,7 +66,6 @@ public class FQWFragment extends Fragment
         {
             throw new RuntimeException(e);
         }
-
         // Тестовые значения.
         /*fqwListItems.add(new FQWListItem("Великобритания", "Лондон", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Мексика", "Мехико", "DRP", "BIG theme"));

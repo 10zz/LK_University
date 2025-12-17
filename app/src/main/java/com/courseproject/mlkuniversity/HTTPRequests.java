@@ -146,10 +146,12 @@ public class HTTPRequests {
 
 
     // Отправляет POST запрос с параметром имени пользователя на сервер; возвращает массив JSON объектов.
-    public JSONObject financePostRequest(Context context, String name)
+    public JSONObject financePostRequest(Context context)
     {
+        SharedPreferences settings = context.getSharedPreferences("Account", MODE_PRIVATE);
+
         RequestBody requestBody = new FormBody.Builder()
-                .add("name", name)
+                .add("name", settings.getString("name", "err"))
                 .build();
         Request request = new Request.Builder()
                 .url(context.getString(R.string.base_url) + context.getString(R.string.finance_request))
