@@ -14,15 +14,11 @@ try {
     $params = getRequestData();
     
     // Формируем SQL запрос с JOIN
-    $sql = "SELECT 
-                es.external_schedule_id,
-                es.schedule_date,
-                es.schedule_subject,
+    $sql = "SELECT
                 u.full_name AS teacher_name,
                 g.group_name,
                 es.start_time,
-                es.end_time,
-                es.room
+                es.end_time
             FROM ExternalSchedule es
             LEFT JOIN `Groups` g ON es.group_id = g.group_id
             LEFT JOIN `Teachers` t ON es.teacher_id = t.teacher_id
@@ -32,7 +28,7 @@ try {
     $conds = [];
     
     // Сортировка по дате
-    $sql .= " ORDER BY es.schedule_date DESC";
+    $sql .= " ORDER BY es.start_time";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute($conds);
@@ -42,20 +38,17 @@ try {
     $results = [];
     foreach ($rows as $row) {
         $results[] = [
-            'subject' => $row['schedule_subject'],
-            'date' => $row['schedule_date'],
-            'teacher' => $row['teacher_name'] ?? null,
-            'group' => $row['group_name'] ?? null,
+            'teacher' => $row['teacher_name'],
+            'group' => $row['group_name'],
             'start_time' => $row['start_time'],
-            'end_time' => $row['end_time'],
-            'room' => $row['room']
+            'end_time' => $row['end_time']
         ];
     }
     
     // Если результатов нет
     if (empty($results)) {
         echo json_encode([
-            'status' => 'error',
+            'status' => 'success',
             'message' => 'Расписание не найдено',
             'data' => []
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

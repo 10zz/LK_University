@@ -8,7 +8,7 @@ try {
         exit;
     }
 
-    $sql = "SELECT m.material_id, m.title, m.description, m.material_type, m.icon_path, m.link
+    $sql = "SELECT m.material_id, m.title, m.description, m.icon_path, m.link
             FROM StudyMaterials m
             LIMIT 200";
     $stmt = $pdo->query($sql);
@@ -19,7 +19,6 @@ try {
         $out[] = [
             'icon_path' => $r['icon_path'],
             'title' => $r['title'],
-            'material_type' => $r['material_type'],
             'description' => $r['description']
         ];
     }
