@@ -47,9 +47,11 @@
     <string name="enter_new_password">Введите новый пароль</string>
     <string name="enter_password_number">Введите номер паспорта</string>
     <string name="enter_SNILS">Введите СНИЛС</string>
+    <string name="enter_name">Введите ФИО</string>
     <string name="enter_password_confirm">Подтвердите пароль</string>
     <string name="back">Назад</string>
     <string name="SNILS">СНИЛС</string>
+    <string name="name">ФИО</string>
     <string name="password_number">Номер паспорта</string>
     <string name="confirm_password">Подтвердить пароль</string>
     <string name="send_link">Получить ссылку</string>

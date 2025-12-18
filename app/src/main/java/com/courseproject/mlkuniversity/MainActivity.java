@@ -110,49 +110,49 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position)
                     {
-                        if (settings.getString("user_type", "err").equals("student"))
+                        if (settings.getString("user_type", "err").equals("Студент"))
                             switch (position)
                             {
                                 case (0):
                                 {
                                     tab.setText(tabText[position])
-                                            .setIcon(R.drawable.notification_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                            .setIcon(R.drawable.notification_icon); 
                                     break;
                                 }
                                 case (1):
                                 {
                                     tab.setText(tabText[position])
-                                            .setIcon(R.drawable.study_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                            .setIcon(R.drawable.study_icon); 
                                     break;
                                 }
                                 case (2):
                                 {
                                     tab.setText(tabText[position])
-                                            .setIcon(R.drawable.schedule_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                            .setIcon(R.drawable.schedule_icon); 
                                     break;
                                 }
                                 case (3):
                                 {
                                     tab.setText(tabText[position])
-                                            .setIcon(R.drawable.finance_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                            .setIcon(R.drawable.finance_icon); 
                                     break;
                                 }
                                 default:
                                     System.out.println("Icons err");
                             }
-                        else if (settings.getString("user_type", "err").equals("teacher"))
+                        else if (settings.getString("user_type", "err").equals("Преподаватель"))
                             switch (position)
                             {
                                 case (0):
                                 {
                                     tab.setText(tabText[position])
-                                            .setIcon(R.drawable.study_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                            .setIcon(R.drawable.study_icon); 
                                     break;
                                 }
                                 case (1):
                                 {
                                     tab.setText(tabText[position])
-                                            .setIcon(R.drawable.schedule_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                            .setIcon(R.drawable.schedule_icon); 
                                     break;
                                 }
                                 default:

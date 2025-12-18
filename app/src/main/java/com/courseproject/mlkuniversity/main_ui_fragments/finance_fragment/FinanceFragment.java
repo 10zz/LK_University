@@ -60,7 +60,7 @@ public class FinanceFragment extends Fragment
             for (int i = 0; i < responseArr.length(); i++)
             {
                 JSONObject object = responseArr.getJSONObject(i);
-                financeListItems.add(new FinanceListItem(object.getString("operation"),
+                financeListItems.add(new FinanceListItem(object.getInt("amount") > 0 ? "Начисление" : "Списание",
                         object.getString("operation_type"),
                         object.getInt("amount"),
                         object.getString("time")));

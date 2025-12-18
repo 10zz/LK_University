@@ -1,13 +1,11 @@
 package com.courseproject.mlkuniversity;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -23,10 +21,8 @@ import org.json.JSONObject;
 public class SignUpActivity extends AppCompatActivity
 {
     EditText nameEntry, emailEntry, SNILSEntry, IDEntry, passwordEntry, verifyPasswordEntry;
-    TextView errorTextView;
 
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,9 +43,8 @@ public class SignUpActivity extends AppCompatActivity
         IDEntry = findViewById(R.id.IDEditText);
         passwordEntry = findViewById(R.id.passwordEditText);
         verifyPasswordEntry = findViewById(R.id.verifyPasswordEditText);
-        Button logInButton = findViewById(R.id.loginButton);
+        Button logInButton = findViewById(R.id.returnButton);
         Button registerButton = findViewById(R.id.registerButton);
-        errorTextView = findViewById(R.id.errorTextView);
 
         // 2. Привязка кнопок к слушателю.
         logInButton.setOnClickListener(buttonListener);
@@ -121,12 +116,18 @@ public class SignUpActivity extends AppCompatActivity
                             // Если пользователя не найдено в БД.
                             case ("error"):
                             {
-                                errorTextView.setText(response.getString("message"));
+                                Toast.makeText(getApplicationContext(),
+                                                response.getString("message"),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
                                 break;
                             }
                             default:
                             {
-                                errorTextView.setText(R.string.login_unknown_error_message);
+                                Toast.makeText(getApplicationContext(),
+                                                getText(R.string.login_unknown_error_message).toString(),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
                             }
                         }
                     }

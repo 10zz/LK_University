@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +21,6 @@ import org.json.JSONObject;
 public class LogInActivity extends AppCompatActivity
 {
     EditText emailEntry, passwordEntry;
-    TextView errorTextView;
 
 
     @Override
@@ -49,7 +48,6 @@ public class LogInActivity extends AppCompatActivity
         Button logInButton = findViewById(R.id.loginButton);
         Button registerButton = findViewById(R.id.registerButton);
         Button passwordRecoveryButton = findViewById(R.id.passwordRecoveryButton);
-        errorTextView = findViewById(R.id.errorTextView);
 
         // 3. Привязка кнопок к слушателю.
         logInButton.setOnClickListener(buttonListener);
@@ -107,12 +105,18 @@ public class LogInActivity extends AppCompatActivity
                         // Если пользователя не найдено в БД.
                         case ("error"):
                         {
-                            errorTextView.setText(response.getString("message"));
+                            Toast.makeText(getApplicationContext(),
+                                            response.getString("message"),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
                             break;
                         }
                         default:
                         {
-                            errorTextView.setText(R.string.login_unknown_error_message);
+                            Toast.makeText(getApplicationContext(),
+                                            getText(R.string.login_unknown_error_message).toString(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
                         }
                     }
                 }
