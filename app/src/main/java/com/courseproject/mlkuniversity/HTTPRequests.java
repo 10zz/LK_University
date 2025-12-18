@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,7 +35,9 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class HTTPRequests {
-    static OkHttpClient httpClient = new OkHttpClient();
+    static OkHttpClient httpClient = new OkHttpClient.Builder()
+            .connectTimeout(10, TimeUnit.MILLISECONDS)
+            .build();
 
 
     public JSONObject fqwPostRequest(Context context)
@@ -64,9 +68,17 @@ public class HTTPRequests {
             System.out.println(s);
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                            "Не удалось подключиться к серверу",
+                            Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -98,9 +110,17 @@ public class HTTPRequests {
             System.out.println("LOGIN\n" + s);
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                    "Не удалось подключиться к серверу",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -138,9 +158,17 @@ public class HTTPRequests {
 
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                    "Не удалось подключиться к серверу",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -174,9 +202,17 @@ public class HTTPRequests {
             System.out.println(s);
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                    "Не удалось подключиться к серверу",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -204,9 +240,17 @@ public class HTTPRequests {
             System.out.println(s);
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                            "Не удалось подключиться к серверу",
+                            Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -243,9 +287,17 @@ public class HTTPRequests {
             System.out.println(s);
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+                catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                    "Не удалось подключиться к серверу",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -277,9 +329,17 @@ public class HTTPRequests {
             System.out.println(s);
             return new JSONObject(s);
         }
-        catch (ExecutionException | InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                    "Не удалось подключиться к серверу",
+                    Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
         }
     }
 
@@ -307,9 +367,17 @@ public class HTTPRequests {
             }
             return BitmapFactory.decodeStream(response.body().byteStream());
         }
-        catch (ExecutionException | InterruptedException | IOException e)
+        catch (InterruptedException | IOException e)
         {
             throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                            "Не удалось подключиться к серверу",
+                            Toast.LENGTH_SHORT)
+                    .show();
+            return null;
         }
     }
 

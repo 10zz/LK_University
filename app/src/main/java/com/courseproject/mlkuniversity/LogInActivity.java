@@ -121,9 +121,7 @@ public class LogInActivity extends AppCompatActivity
                     }
                 }
                 catch (JSONException e)
-                {
-                    throw new RuntimeException(e);
-                }
+                {}
             }
             // Если нажата кнопка регистрации.
             else if (v.getId() == R.id.registerButton)

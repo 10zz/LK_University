@@ -62,9 +62,7 @@ public class HomeFragment extends Fragment
             }
         }
         catch (JSONException e)
-        {
-            throw new RuntimeException(e);
-        }
+        {}
         // Тестовые значения.
         /*homeListItems.add(new HomeListItem("Бразилия", "Бразилиа"));
         homeListItems.add(new HomeListItem("Аргентина", "Буэнос-Айрес"));

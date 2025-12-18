@@ -1,8 +1,5 @@
 package com.courseproject.mlkuniversity.main_ui_fragments.finance_fragment;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,7 +13,6 @@ import android.view.ViewGroup;
 
 import com.courseproject.mlkuniversity.HTTPRequests;
 import com.courseproject.mlkuniversity.R;
-import com.courseproject.mlkuniversity.main_ui_fragments.study_fragment.StudyListItem;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -67,9 +63,7 @@ public class FinanceFragment extends Fragment
             }
         }
         catch (JSONException e)
-        {
-            throw new RuntimeException(e);
-        }
+        {}
         // Тестовые значения.
         /*financeListItems.add(new FinanceListItem("Бразилия", "Бразилиа", "23", "23.12.2333"));
         financeListItems.add(new FinanceListItem("Аргентина", "Буэнос-Айрес", "23", "23.12.2333"));

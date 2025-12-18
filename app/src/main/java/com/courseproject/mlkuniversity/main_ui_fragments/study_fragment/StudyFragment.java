@@ -64,8 +64,6 @@ public class StudyFragment extends Fragment
             }
         }
         catch (JSONException e)
-        {
-            throw new RuntimeException(e);
-        }
+        {}
     }
 }

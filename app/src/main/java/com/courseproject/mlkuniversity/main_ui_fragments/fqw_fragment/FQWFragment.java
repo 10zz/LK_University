@@ -63,9 +63,7 @@ public class FQWFragment extends Fragment
             }
         }
         catch (JSONException e)
-        {
-            throw new RuntimeException(e);
-        }
+        {}
         // Тестовые значения.
         /*fqwListItems.add(new FQWListItem("Великобритания", "Лондон", "DRP", "BIG theme"));
         fqwListItems.add(new FQWListItem("Мексика", "Мехико", "DRP", "BIG theme"));

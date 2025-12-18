@@ -26,7 +26,6 @@ public class SignUpActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        // TODO: Нужно полное имя пользователя для регистрации
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_up);
@@ -132,9 +131,7 @@ public class SignUpActivity extends AppCompatActivity
                         }
                     }
                     catch (JSONException e)
-                    {
-                        throw new RuntimeException(e);
-                    }
+                    {}
                 }
                 else
                     Toast.makeText(getApplicationContext(),

@@ -147,9 +147,7 @@ public class ProfileActivity extends AppCompatActivity
                         }
                     }
                     catch (JSONException e)
-                    {
-                        throw new RuntimeException(e);
-                    }
+                    {}
                 }
                 else
                     // Иначе, вывод сообщения о несовпадении паролей.

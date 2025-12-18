@@ -110,9 +110,7 @@ public class ScheduleFragment extends Fragment
             textView.setAdapter(new ArrayAdapter<String>(rootView.getContext(),  android.R.layout.simple_spinner_dropdown_item, list));
         }
         catch (JSONException e)
-        {
-            throw new RuntimeException(e);
-        }
+        {}
     }
 
     View.OnClickListener dateButtonListener = new View.OnClickListener()
@@ -206,9 +204,7 @@ public class ScheduleFragment extends Fragment
             }
         }
         catch (JSONException e)
-        {
-            throw new RuntimeException(e);
-        }
+        {}
         // Тестовые данные.
         /*for (int i = 0; i < 6; i++)
         {

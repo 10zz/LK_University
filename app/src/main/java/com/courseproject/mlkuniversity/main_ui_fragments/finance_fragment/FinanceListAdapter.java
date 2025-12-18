@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.courseproject.mlkuniversity.R;
@@ -50,7 +49,6 @@ FinanceListAdapter(Context context, List<FinanceListItem> financeListItems)
     public void onBindViewHolder(FinanceListAdapter.ViewHolder holder, int position)
     {
         FinanceListItem financeListItem = financeListItems.get(position);
-        // TODO: присваивание иконки из переменной с иконкой.
         holder.operationView.setText(financeListItem.getOperation());
         holder.operationTypeView.setText(financeListItem.getOperationType());
         holder.sumView.setText(Integer.toString(financeListItem.getSum()));
