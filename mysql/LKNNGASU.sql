@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Дек 18 2025 г., 16:15
+-- Время создания: Дек 19 2025 г., 00:59
 -- Версия сервера: 8.0.30
 -- Версия PHP: 7.2.34
 
@@ -166,29 +166,6 @@ INSERT INTO `Students` (`student_id`, `group_id`, `user_id`) VALUES
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `Study`
---
-
-CREATE TABLE `Study` (
-  `study_id` int NOT NULL,
-  `study_name` varchar(255) NOT NULL,
-  `study_description` varchar(255) NOT NULL,
-  `study_icon` varchar(500) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `Study`
---
-
-INSERT INTO `Study` (`study_id`, `study_name`, `study_description`, `study_icon`) VALUES
-(1, 'Программирование', 'Изучение языков программирования и алгоритмов', 'study_icons/code.png'),
-(2, 'Математика', 'Высшая математика и математический анализ', 'study_icons/math.png'),
-(3, 'Физика', 'Классическая и современная физика', 'study_icons/physics.png'),
-(4, 'Химия', 'Органическая и неорганическая химия', 'study_icons/chemistry.png');
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `StudyMaterials`
 --
 
@@ -314,12 +291,6 @@ ALTER TABLE `Students`
   ADD KEY `fk_students_groups` (`group_id`);
 
 --
--- Индексы таблицы `Study`
---
-ALTER TABLE `Study`
-  ADD PRIMARY KEY (`study_id`);
-
---
 -- Индексы таблицы `StudyMaterials`
 --
 ALTER TABLE `StudyMaterials`
@@ -378,12 +349,6 @@ ALTER TABLE `Payments`
 --
 ALTER TABLE `Students`
   MODIFY `student_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT для таблицы `Study`
---
-ALTER TABLE `Study`
-  MODIFY `study_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `StudyMaterials`
