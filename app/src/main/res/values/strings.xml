@@ -29,4 +29,42 @@
         <item>Расписание</item>
     </string-array>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="LK">ЛИЧНЫЙ КАБИНЕТ</string>
+    <string name="of_student_and_employee">студента и сотрудника</string>
+    <string name="Email">Email</string>
+    <string name="password">Пароль</string>
+    <string name="current_password">Текущий пароль</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="LogIn">Войти</string>
+    <string name="SignUp">Зарегестрироваться</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="password_reset"><font color="#44AD57">Ваш пароль был сброшен!</font></string>
+    <string name="support_text">Техническая поддержка - lk@nngasu.ru</string>
+    <string name="enter_email">Введите Email</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_current_password">Введите текущий пароль</string>
+    <string name="enter_new_password">Введите новый пароль</string>
+    <string name="enter_password_number">Введите номер паспорта</string>
+    <string name="enter_SNILS">Введите СНИЛС</string>
+    <string name="enter_password_confirm">Подтвердите пароль</string>
+    <string name="back">Назад</string>
+    <string name="SNILS">СНИЛС</string>
+    <string name="password_number">Номер паспорта</string>
+    <string name="confirm_password">Подтвердить пароль</string>
+    <string name="send_link">Получить ссылку</string>
+    <string name="forgot_password_text">Забыли свой пароль? Без проблем. Просто сообщите нам свой адрес электронной почты, и мы вышлем вам по электронной почте ссылку для сброса пароля.</string>
+    <string name="link_sent_text"><font color="#44AD57">Мы отправили ссылку для сброса пароля по электронной почте!</font></string>
+    <string name="change_profile_picture_button">Выбрать фото</string>
+    <string name="change_password_text">Сменить пароль</string>
+    <string name="account_exit_button">Выйти</string>
+    <string name="finances">Финансы</string>
+    <string name="follow">Перейти</string>
+    <string name="start_date">Дата начала</string>
+    <string name="end_date">Дата конца</string>
+    <string name="group_choice">Выбор группы</string>
+    <string name="teacher_choice">Выбор преподавателя</string>
+    <string name="to_the_supervisor">Руководителю ВКР</string>
+    <string name="student_list">СПИСОК СТУДЕНТОВ</string>
+    <string name="schedule_text">Для удобного просмотра расписания также доступен чат-бот: @Official_NNGASU_LK_bot</string>
 </resources>

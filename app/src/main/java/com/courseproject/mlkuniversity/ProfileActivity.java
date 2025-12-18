@@ -1,5 +1,6 @@
 package com.courseproject.mlkuniversity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class ProfileActivity extends AppCompatActivity
     EditText currentPasswordEntry, newPasswordEntry, verifyPasswordEntry;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

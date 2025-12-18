@@ -110,9 +110,54 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onConfigureTab(@NonNull TabLayout.Tab tab, int position)
                     {
-                        // Установка иконок для вкладок tabLayout.
-                        tab.setText(tabText[position])
-                                .setIcon(R.drawable.ic_launcher_foreground);
+                        if (settings.getString("user_type", "err").equals("student"))
+                            switch (position)
+                            {
+                                case (0):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.notification_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (1):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.study_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (2):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.schedule_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (3):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.finance_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                default:
+                                    System.out.println("Icons err");
+                            }
+                        else if (settings.getString("user_type", "err").equals("teacher"))
+                            switch (position)
+                            {
+                                case (0):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.study_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                case (1):
+                                {
+                                    tab.setText(tabText[position])
+                                            .setIcon(R.drawable.schedule_icon); // !! замени R.drawable.ic_launcher_foreground на нужную иконку, для остальных ниже аналогично.
+                                    break;
+                                }
+                                default:
+                                    System.out.println("Icons err");
+                            }
                     }
         });
         tabLayoutMediator.attach();

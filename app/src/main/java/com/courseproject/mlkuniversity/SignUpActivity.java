@@ -1,5 +1,6 @@
 package com.courseproject.mlkuniversity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class SignUpActivity extends AppCompatActivity
     TextView errorTextView;
 
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -68,7 +70,7 @@ public class SignUpActivity extends AppCompatActivity
         public void onClick(View v)
         {
             // Если нажата кнопка входа.
-            if (v.getId() == R.id.loginButton)
+            if (v.getId() == R.id.returnButton)
             {
                 // Переход в LogInActivity с передачей текста из полей email и password.
                 Intent LogInIntent = new Intent(SignUpActivity.this, LogInActivity.class)
