@@ -1,9 +1,13 @@
 package com.courseproject.mlkuniversity.main_ui_fragments.study_fragment;
 
+
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,7 +49,15 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
         holder.headerView.setText(studyListItem.getHeader());
         holder.descriptionView.setText(studyListItem.getDescription());
         holder.iconView.setImageBitmap(studyListItem.getIcon());
-        // TODO: сеттер для иконки.
+        holder.linkButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(studyListItem.getLink()));
+                inflater.getContext().startActivity(browserIntent);
+            }
+        });
     }
 
 
@@ -62,6 +74,7 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
     {
         final TextView headerView, descriptionView;
         final ImageView iconView;
+        final Button linkButton;
 
 
         ViewHolder(View view)
@@ -70,6 +83,7 @@ public class StudyListAdapter extends RecyclerView.Adapter<StudyListAdapter.View
             headerView = view.findViewById(R.id.headerText);
             descriptionView = view.findViewById(R.id.descriptionText);
             iconView = view.findViewById(R.id.icon);
+            linkButton = view.findViewById(R.id.linkButton);
         }
     }
 }

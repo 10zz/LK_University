@@ -58,6 +58,7 @@ public class StudyFragment extends Fragment
                 JSONObject object = responseArr.getJSONObject(i);
                 studyListItems.add(new StudyListItem(object.getString("title"),
                         object.getString("description"),
+                        object.getString("link"),
                         request.BitmapGetRequest(this.getContext(), object.getString("icon_path"))
                 ));
             }
