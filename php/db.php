@@ -1,5 +1,4 @@
 <?php
-// db.php - настройте параметры и подключайте в каждом скрипте
 $db_host = '127.0.0.1';
 $db_name = 'LKNNGASU';
 $db_user = 'root';
@@ -21,7 +20,6 @@ try {
     exit;
 }
 
-// helper: получить JSON-или-form данные
 function getRequestData() {
     $data = [];
     $contentType = $_SERVER['CONTENT_TYPE'] ?? '';
