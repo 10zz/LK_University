@@ -247,8 +247,8 @@ public class HTTPRequests {
                         .host(context.getString(R.string.base_url).substring(7, context.getString(R.string.base_url).length() - 1))
                         .addPathSegment("/" + context.getString(R.string.schedule_request))
                         //
-                        .addQueryParameter("group", group)
-                        .addQueryParameter("teacher", teacher)
+                        .addQueryParameter("group_name", group)
+                        .addQueryParameter("full_name", teacher)
                         .addQueryParameter("start_date", dateStart)
                         .addQueryParameter("end_date", dateEnd)
                         .build())

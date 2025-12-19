@@ -52,8 +52,6 @@ public class ScheduleFragment extends Fragment
         // 1. Создается объект inflater и RecyclerView этого фрагмента.
         rootView = inflater.inflate(R.layout.fragment_schedule, container,false);
         RecyclerView recyclerView = rootView.findViewById(R.id.list);
-        // TODO: исправить скроллинг.
-        recyclerView.setNestedScrollingEnabled(false);
 
         // 2. Привязка View-переменных.
         groupEditText = rootView.findViewById(R.id.groupEditText);
