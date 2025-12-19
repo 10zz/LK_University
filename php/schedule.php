@@ -12,9 +12,8 @@ try {
     }
 
     // Получаем параметры из GET запроса
-    $schedule_date = $_GET['schedule_date'] ?? null;
-    $start_time = $_GET['start_time'] ?? null;
-    $end_time = $_GET['end_time'] ?? null;
+    $start_date = $_GET['start_date'] ?? null;
+    $end_date = $_GET['end_date'] ?? null;
     $group_name = $_GET['group_name'] ?? null;
     $full_name = $_GET['full_name'] ?? null;
     
@@ -37,19 +36,16 @@ try {
     $params = [];
     
     // Добавляем условия фильтрации
-    if ($schedule_date !== null) {
-        $sql .= " AND es.schedule_date = :schedule_date";
-        $params[':schedule_date'] = $schedule_date;
-    }
-    
-    if ($start_time !== null) {
-        $sql .= " AND es.start_time >= :start_time";
-        $params[':start_time'] = $start_time;
-    }
-    
-    if ($end_time !== null) {
-        $sql .= " AND es.end_time <= :end_time";
-        $params[':end_time'] = $end_time;
+    if ($start_date !== null && $end_date !== null) {
+        $sql .= " AND es.schedule_date BETWEEN :start_date AND :end_date";
+        $params[':start_date'] = $start_date;
+        $params[':end_date'] = $end_date;
+    } elseif ($start_date !== null) {
+        $sql .= " AND es.schedule_date >= :start_date";
+        $params[':start_date'] = $start_date;
+    } elseif ($end_date !== null) {
+        $sql .= " AND es.schedule_date <= :end_date";
+        $params[':end_date'] = $end_date;
     }
     
     if ($group_name !== null) {
@@ -63,7 +59,7 @@ try {
     }
     
     // Сортировка
-    $sql .= " ORDER BY es.schedule_date, es.start_time";
+    $sql .= " ORDER BY es.schedule_date";
     
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
