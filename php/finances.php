@@ -45,7 +45,6 @@ try {
     foreach ($payments as $p) {
         $out[] = [
             'student' => $p['student_name'],
-            'operation' => 'Начисление',
             'operation_type' => $p['payment_type'],
             'amount' => (float)$p['amount'],
             'time' => $p['payment_date']

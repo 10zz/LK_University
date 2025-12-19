@@ -14,7 +14,7 @@ try {
     $password = $input['password'] ?? '';
     $passport = trim($input['passport'] ?? '');
     $snils = trim($input['snils'] ?? '');
-    $icon = trim($input['user_icon'] ?? '');
+    $icon = "profile_pictures/pic.jpeg";
 
     if ($full_name === '' || $email === '' || $password === '' || $passport === '' || $snils === '') {
         echo json_encode(['status' => 'error', 'message' => 'Все поля обязательны: ФИО, email, пароль, пасспорт, СНИЛС'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
