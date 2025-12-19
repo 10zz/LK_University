@@ -6,21 +6,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -62,8 +54,6 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-
-            // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
             return new JSONObject(s);
@@ -104,8 +94,6 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-
-            // TODO: clean.
             String s = response.body().string();
             System.out.println("LOGIN\n" + s);
             return new JSONObject(s);
@@ -151,8 +139,6 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-
-            // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
 
@@ -196,8 +182,6 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-
-            // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
             return new JSONObject(s);
@@ -234,8 +218,6 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-
-            // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
             return new JSONObject(s);
@@ -282,12 +264,11 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-            // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
             return new JSONObject(s);
         }
-                catch (InterruptedException | IOException | JSONException e)
+        catch (InterruptedException | IOException | JSONException e)
         {
             throw new RuntimeException(e);
         }
@@ -323,8 +304,6 @@ public class HTTPRequests {
                 throw new IOException("Запрос к серверу не был успешен: " +
                         response.code() + " " + response.message());
             }
-
-            // TODO: clean.
             String s = response.body().string();
             System.out.println(s);
             return new JSONObject(s);
@@ -338,6 +317,48 @@ public class HTTPRequests {
             Toast.makeText(context,
                     "Не удалось подключиться к серверу",
                     Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
+        }
+    }
+
+
+    public JSONObject recoverPasswordPostRequest(Context context, String email, String ID, String SNILS, String password)
+    {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("email",email)
+                .add("snils",SNILS)
+                .add("passport",ID)
+                .add("new_password",password)
+                .build();
+        Request request = new Request.Builder()
+                .url(context.getString(R.string.base_url) + context.getString(R.string.password_recover_request))
+                .post(requestBody)
+                .build();
+        CallbackFuture future = new CallbackFuture();
+
+        httpClient.newCall(request).enqueue(future);
+        try
+        {
+            Response response = future.get();
+            if (!response.isSuccessful())
+            {
+                throw new IOException("Запрос к серверу не был успешен: " +
+                        response.code() + " " + response.message());
+            }
+            String s = response.body().string();
+            System.out.println(s);
+            return new JSONObject(s);
+        }
+        catch (InterruptedException | IOException | JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                            "Не удалось подключиться к серверу",
+                            Toast.LENGTH_SHORT)
                     .show();
             return new JSONObject();
         }

@@ -1,10 +1,12 @@
 package com.courseproject.mlkuniversity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +14,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class PasswordRecoveryActivity extends AppCompatActivity
 {
-    EditText emailEntry;
+    EditText emailEditText, IDEditText, SNILSEditText, newPasswordEditText, confirmPasswordEditText;
     Button sendButton, returnButton;
 
 
@@ -32,7 +37,11 @@ public class PasswordRecoveryActivity extends AppCompatActivity
         });
 
         // 1. Привязка View-переменных.
-        emailEntry = findViewById(R.id.emailEditText);
+        emailEditText = findViewById(R.id.emailEditText);
+        IDEditText = findViewById(R.id.IDEditText);
+        SNILSEditText = findViewById(R.id.SNILSEditText);
+        newPasswordEditText = findViewById(R.id.newPasswordEditText);
+        confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText);
         sendButton = findViewById(R.id.sendButton);
         returnButton = findViewById(R.id.returnButton);
 
@@ -43,7 +52,7 @@ public class PasswordRecoveryActivity extends AppCompatActivity
         // 3. Передача значений из LogInActivity в текстовые поля.
         Bundle arguments = getIntent().getExtras();
         if (arguments != null)
-            emailEntry.setText(arguments.getString("email"));
+            emailEditText.setText(arguments.getString("email"));
     }
 
     View.OnClickListener buttonListener = new View.OnClickListener()
@@ -54,14 +63,67 @@ public class PasswordRecoveryActivity extends AppCompatActivity
             // Если нажата кнопка отправки.
             if (v.getId() == R.id.sendButton)
             {
-                // TODO: Я хз как это делать.
+                // Если введённые пароли совпадают.
+                if (newPasswordEditText.getText().toString().equals(confirmPasswordEditText.getText().toString()))
+                {
+                    // 4. Отправка запроса на смену пароля.
+                    HTTPRequests request = new HTTPRequests();
+                    JSONObject responseJSON = request.recoverPasswordPostRequest(PasswordRecoveryActivity.this,
+                            emailEditText.getText().toString(),
+                            IDEditText.getText().toString(),
+                            SNILSEditText.getText().toString(),
+                            newPasswordEditText.getText().toString());
+                    try
+                    {
+                        // 5. Проверка ответа сервера.
+                        String changeStatus = responseJSON.getString("status");
+                        switch (changeStatus)
+                        {
+                            // Если смена пароля успешна.
+                            case ("success"):
+                            {
+                                // 6. Вывод всплывающего окна о смене пароля.
+                                Toast.makeText(getApplicationContext(),
+                                                responseJSON.getString("message"),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                                break;
+                            }
+                            // Если смена пароля не успешна, вывод сообщения об ошибке.
+                            case ("error"):
+                            {
+                                Toast.makeText(getApplicationContext(),
+                                                responseJSON.getString("message"),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                                break;
+                            }
+                            // Иначе, вывод сообщения о неизвестной ошибке.
+                            default:
+                            {
+                                Toast.makeText(getApplicationContext(),
+                                                getText(R.string.login_unknown_error_message).toString(),
+                                                Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+                    }
+                    catch (JSONException e)
+                    {}
+                }
+                else
+                    // Иначе, вывод сообщения о несовпадении паролей.
+                    Toast.makeText(getApplicationContext(),
+                                    "Введённые пароли не совпадают",
+                                    Toast.LENGTH_SHORT)
+                            .show();
             }
             // Если нажата кнопка регистрации.
             else if (v.getId() == R.id.returnButton)
             {
                 // Осуществляется переход в LogInActivity с передачей введённого email.
                 Intent SignUpIntent = new Intent(PasswordRecoveryActivity.this, LogInActivity.class)
-                        .putExtra("email", emailEntry.getText().toString());
+                        .putExtra("email", emailEditText.getText().toString());
                 startActivity(SignUpIntent);
             }
             else
