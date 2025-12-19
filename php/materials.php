@@ -19,7 +19,8 @@ try {
         $out[] = [
             'icon_path' => $r['icon_path'],
             'title' => $r['title'],
-            'description' => $r['description']
+            'description' => $r['description'],
+            'link' => $r['link'] 
         ];
     }
 
