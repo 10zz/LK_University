@@ -16,6 +16,9 @@ try {
     $end_date = $_GET['end_date'] ?? null;
     $group_name = $_GET['group_name'] ?? null;
     $full_name = $_GET['full_name'] ?? null;
+
+    $start_date = date("Y-m-d", strtotime($start_date));
+    $end_date = date("Y-m-d", strtotime($end_date));
     
     // Формируем SQL запрос с JOIN
     $sql = "SELECT
