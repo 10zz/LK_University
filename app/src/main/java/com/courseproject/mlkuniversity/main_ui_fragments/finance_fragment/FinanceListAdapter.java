@@ -27,9 +27,8 @@ FinanceListAdapter(Context context, List<FinanceListItem> financeListItems)
     {
         this.financeListItems = financeListItems;
         this.inflater = LayoutInflater.from(context);
-        // TODO: заменить иконки.
-        depositIcon = AppCompatResources.getDrawable(context, R.drawable.ic_launcher_foreground);
-        withdrawIcon = AppCompatResources.getDrawable(context, R.drawable.ic_launcher_background);
+        depositIcon = AppCompatResources.getDrawable(context, R.drawable.green_up_arrow);
+        withdrawIcon = AppCompatResources.getDrawable(context, R.drawable.red_bottom_arrow);
     }
 
 
