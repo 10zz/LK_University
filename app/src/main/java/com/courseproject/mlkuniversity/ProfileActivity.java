@@ -3,6 +3,7 @@ package com.courseproject.mlkuniversity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -26,6 +30,8 @@ public class ProfileActivity extends AppCompatActivity
 {
     TextView userEmailLabel;
     EditText currentPasswordEntry, newPasswordEntry, verifyPasswordEntry;
+    ImageView profilePicture;
+    SharedPreferences settings;
 
 
     @SuppressLint("MissingInflatedId")
@@ -41,6 +47,8 @@ public class ProfileActivity extends AppCompatActivity
             return insets;
         });
 
+        settings = getSharedPreferences("Account", MODE_PRIVATE);
+
         // 1. Привязка View-переменных.
         TextView userNameLabel = findViewById(R.id.userNameText);
         TextView userRoleLabel = findViewById(R.id.userRoleText);
@@ -52,10 +60,9 @@ public class ProfileActivity extends AppCompatActivity
         Button changeProfilePictureButton = findViewById(R.id.changeProfilePictureButton);
         Button changePasswordButton = findViewById(R.id.changePasswordButton);
         Button accountExitButton = findViewById(R.id.accountExitButton);
-        ImageView profilePicture = findViewById(R.id.profilePicture);
+        profilePicture = findViewById(R.id.profilePicture);
 
         // 2. Установка значений из SharedPreference в текстовые поля.
-        SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
         userNameLabel.setText(settings.getString("name", "err"));
         userEmailLabel.setText(settings.getString("email", "err"));
         userRoleLabel.setText(settings.getString("user_type", "err"));
@@ -87,13 +94,7 @@ public class ProfileActivity extends AppCompatActivity
             // Если нажата кнопка смены иконки профиля.
             else if (v.getId() == R.id.changeProfilePictureButton)
             {
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                intent.setType("image/*");
-
-                startActivity(intent);
-                // TODO: PHP скрипт смены иконки профиля.
+                getImageActivity.launch("image/*");
             }
             // Если нажата кнопка смены пароля.
             else if (v.getId() == R.id.changePasswordButton)
@@ -116,7 +117,6 @@ public class ProfileActivity extends AppCompatActivity
                             case ("success"):
                             {
                                 // 3. Перезапись нового пароля в SharedPreferences.
-                                SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                                 SharedPreferences.Editor prefEditor = settings.edit();
                                 prefEditor.putString("password", newPasswordEntry.getText().toString());
                                 prefEditor.apply();
@@ -160,7 +160,6 @@ public class ProfileActivity extends AppCompatActivity
             else if (v.getId() == R.id.accountExitButton)
             {
                 // Очистка SharedPreferences.
-                SharedPreferences settings = getSharedPreferences("Account", MODE_PRIVATE);
                 settings.edit().clear().apply();
                 // Переход на LogInActivity.
                 Intent LogInIntent = new Intent(ProfileActivity.this, LogInActivity.class);
@@ -170,4 +169,28 @@ public class ProfileActivity extends AppCompatActivity
                 System.out.println("Unknown button");
         }
     };
+
+    ActivityResultLauncher<String> getImageActivity = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    HTTPRequests request = new HTTPRequests();
+                    JSONObject responseJSON = request.sendImagePostRequest(ProfileActivity.this, uri);
+                    try
+                    {
+                        if (responseJSON.getString("status").equals("success")) {
+                            profilePicture.setImageURI(uri);
+                            settings.edit().putString("profile_picture", "profile_pictures/" + settings.getString("email", "err") + ".png")
+                                    .apply();
+
+                        }
+                        Toast.makeText(getApplicationContext(),
+                                        responseJSON.getString("message"),
+                                        Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                    catch (JSONException e)
+                    {}
+                }
+            });
 }

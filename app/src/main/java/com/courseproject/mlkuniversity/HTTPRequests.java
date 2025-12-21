@@ -6,12 +6,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -21,6 +24,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
 import okhttp3.HttpUrl;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -158,6 +163,63 @@ public class HTTPRequests {
         }
     }
 
+
+    public JSONObject sendImagePostRequest(Context context, Uri uri)
+    {
+        SharedPreferences settings = context.getSharedPreferences("Account", MODE_PRIVATE);
+
+        Bitmap bitmap;
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("email", settings.getString("email", "err"))
+                .addFormDataPart("image",
+                        settings.getString("email", "err") + ".png",
+                        RequestBody.create(byteArray,MediaType.parse("image/*png")))
+                .build();
+        Request request = new Request.Builder()
+                .url(context.getString(R.string.base_url) + context.getString(R.string.upload_profile_picture_request))
+                .post(requestBody)
+                .build();
+        CallbackFuture future = new CallbackFuture();
+
+        httpClient.newCall(request).enqueue(future);
+        try
+        {
+            Response response = future.get();
+            if (!response.isSuccessful())
+            {
+                throw new IOException("Запрос к серверу не был успешен: " +
+                        response.code() + " " + response.message());
+            }
+            String s = response.body().string();
+            System.out.println(s);
+
+            return new JSONObject(s);
+        }
+        catch (InterruptedException | IOException | JSONException e)
+        {
+            throw new RuntimeException(e);
+        }
+        catch (ExecutionException e)
+        {
+            Toast.makeText(context,
+                            "Не удалось подключиться к серверу",
+                            Toast.LENGTH_SHORT)
+                    .show();
+            return new JSONObject();
+        }
+    }
 
     // Отправляет POST запрос с параметром имени пользователя на сервер; возвращает массив JSON объектов.
     public JSONObject financePostRequest(Context context)

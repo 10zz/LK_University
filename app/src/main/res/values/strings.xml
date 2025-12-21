@@ -13,6 +13,7 @@
     <string name="teachers_request">list_teachers.php</string>
     <string name="password_change_request">password_change.php</string>
     <string name="password_recover_request">password_recover.php</string>
+    <string name="upload_profile_picture_request">upload_profile_picture.php</string>
 
     <string name="login_error_message">Данный пользователь не найден в системе</string>
     <string name="api_error_message">Ошибка в API</string>
