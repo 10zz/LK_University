@@ -33,9 +33,7 @@ try {
 
     $full_name = $user['full_name'];
     $user_type = $user['user_type'];
-
-    // Возвращаем путь к иконке из базы данных
-    $user_icon = $user['user_icon'] ?? 'profile_pictures/pic.jpeg';
+    $user_icon = $user['user_icon'];
 
     echo json_encode([
         'status' => 'success',
