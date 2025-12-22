@@ -452,7 +452,8 @@ public class HTTPRequests {
         }
         catch (InterruptedException | IOException e)
         {
-            throw new RuntimeException(e);
+            System.out.println(e);
+            return null;
         }
         catch (ExecutionException e)
         {
