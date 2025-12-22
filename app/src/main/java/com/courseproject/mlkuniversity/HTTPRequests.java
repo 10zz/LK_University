@@ -305,7 +305,7 @@ public class HTTPRequests {
         Request request = new Request.Builder()
                 .url(new HttpUrl.Builder()
                         .scheme("http")
-                        // TODO: Это пиздец какой костыль.
+                        // TODO: Это ужасный костыль.
                         .host(context.getString(R.string.base_url).substring(7, context.getString(R.string.base_url).length() - 1))
                         .addPathSegment("/" + context.getString(R.string.schedule_request))
                         //
